@@ -1,0 +1,8 @@
+{
+    "1.0.0": {
+        "feature": [
+            "allow packages to be installed from sub-folders of repositories",
+            "allow packages to be installed from sub-folders of zip files"
+        ]
+    }
+}

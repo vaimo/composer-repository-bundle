@@ -1,0 +1,38 @@
+{
+    "name": "vaimo/composer-repository-bundle",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "description": "Allow packages to be installed from a repository or tarball bundle that have multiple packages in the sub-folders",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Allan Paiste",
+            "email": "allan.paiste@vaimo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "composer-plugin-api": "^1.0"
+    },
+    "support": {
+        "source": "https://github.com/vaimo/composer-repository-bundle",
+        "docs": "https://github.com/vaimo/composer-repository-bundle",
+        "issues": "https://github.com/vaimo/composer-repository-bundle/issues"
+    },
+    "keywords": [
+        "environment variables",
+        "env config",
+        "env variables",
+        "env defaults"
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "class": "Vaimo\\ComposerRepositoryBundle\\Plugin",
+        "changelog-file": "changelog.json"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vaimo\\ComposerRepositoryBundle\\": "src"
+        }
+    }
+}
