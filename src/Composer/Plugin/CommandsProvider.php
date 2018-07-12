@@ -11,7 +11,8 @@ class CommandsProvider implements \Composer\Plugin\Capability\CommandProvider
     {
         return array(
             new \Vaimo\ComposerRepositoryBundle\Commands\InfoCommand,
-            new \Vaimo\ComposerRepositoryBundle\Commands\DeployCommand
+            new \Vaimo\ComposerRepositoryBundle\Commands\DeployCommand,
+            new \Vaimo\ComposerRepositoryBundle\Commands\ListCommand
         );
     }
 }

@@ -13,9 +13,15 @@ class Plugin implements \Composer\Plugin\PluginInterface,
      */
     private $bundlesManager;
 
+    /**
+     * @var \Composer\IO\IOInterface
+     */
+    private $io;
+
     public function activate(\Composer\Composer $composer, \Composer\IO\IOInterface $io)
     {
         $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
+        $this->io = $io;
     }
 
     public static function getSubscribedEvents()
@@ -31,7 +37,9 @@ class Plugin implements \Composer\Plugin\PluginInterface,
      */
     public function bootstrapBundles()
     {
-        $this->bundlesManager->bootstrap(true);
+        $this->bundlesManager->bootstrap(
+            $this->io->isVerbose()
+        );
     }
 
     public function getCapabilities()

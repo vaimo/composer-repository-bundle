@@ -12,4 +12,5 @@ class Config
     const CACHE_DIR = 'cache-dir';
     const PACKAGE_FILE = 'composer.json';
     const AUTOLOAD = 'autoload';
+    const CONSTRAINT_ANY = '*';
 }

@@ -7,6 +7,7 @@ namespace Vaimo\ComposerRepositoryBundle\Commands;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vaimo\ComposerRepositoryBundle\Composer\Config as ComposerConfig;
 
 class DeployCommand extends \Composer\Command\BaseCommand
 {
@@ -45,7 +46,7 @@ class DeployCommand extends \Composer\Command\BaseCommand
         $io->write('<info>Deploy bundle package(s)</info>');
 
         foreach ($packageNames as $package) {
-            $package = $repository->findPackage($package, '*');
+            $package = $repository->findPackage($package, ComposerConfig::CONSTRAINT_ANY);
 
             $operation = new \Composer\DependencyResolver\Operation\InstallOperation($package);
 

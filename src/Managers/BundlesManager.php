@@ -5,10 +5,8 @@
  */
 namespace Vaimo\ComposerRepositoryBundle\Managers;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Vaimo\ComposerRepositoryBundle\BootstrapSteps as Steps;
 use Vaimo\ComposerRepositoryBundle\Repositories\BundlesRepository;
-use Vaimo\ComposerRepositoryBundle\Composer\Utils\OutputUtils;
 
 class BundlesManager
 {

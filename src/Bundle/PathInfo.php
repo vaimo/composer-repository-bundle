@@ -5,6 +5,8 @@
  */
 namespace Vaimo\ComposerRepositoryBundle\Bundle;
 
+use Vaimo\ComposerRepositoryBundle\Composer\Config as ComposerConfig;
+
 class PathInfo
 {
     /**
@@ -38,7 +40,7 @@ class PathInfo
     {
         $packageRepository = $this->repositoryManager->getLocalRepository();
 
-        if (!$package = $packageRepository->findPackage($packageName, '*')) {
+        if (!$package = $packageRepository->findPackage($packageName, ComposerConfig::CONSTRAINT_ANY)) {
             return array();
         }
 

@@ -1,4 +1,13 @@
 {
+    "1.1.0": {
+        "feature": [
+            "new command added to list bundles and the packages they provide",
+            "hide bundle package-list details on non-verbose run"
+        ],
+        "maintenance": [
+            "unused code/classes removed"
+        ]
+    },
     "1.0.0": {
         "feature": [
             "allow packages to be installed from sub-folders of repositories",
