@@ -42,10 +42,6 @@ class PackagesCollector
                 ), $config['package'])
             );
 
-            if (isset($config['package']['version']) && !isset($packageDefinition['version'])) {
-                $packageDefinition['version'] = $config['package']['version'];
-            }
-
             $packageJson = json_encode($packageDefinition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
             file_put_contents($path, $packageJson);
@@ -57,7 +53,7 @@ class PackagesCollector
             $definitions[$packageName] = array(
                 'owner' => $config['name'],
                 'path' => $packagePath,
-                'md5' => $this->checksumCalculator->calculate($packagePath),
+                'md5' => md5($config['md5'] . ':' . $this->checksumCalculator->calculate($packagePath)),
                 'config' => $packageDefinition
             );
         }

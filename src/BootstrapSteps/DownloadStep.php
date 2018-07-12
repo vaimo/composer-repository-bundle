@@ -31,14 +31,18 @@ class DownloadStep
 
     public function execute(array $bundles)
     {
+        $downloadManager = $this->composer->getDownloadManager();
+
         $this->io->write('<info>Downloading bundles</info>');
 
-        $downloader = new \Vaimo\ComposerRepositoryBundle\Package\Downloader(
-            $this->composer->getDownloadManager()
-        );
+        $downloader = new \Vaimo\ComposerRepositoryBundle\Package\Downloader($downloadManager);
 
         try {
-            array_walk($bundles, array($downloader, 'download'));
+            $results = array_map(array($downloader, 'download'), $bundles);
+
+            if (!array_filter($results)) {
+                $this->io->write('All bundles already downloaded');
+            }
         } catch (\Exception $e) {
             $this->io->error(sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage()));
         }

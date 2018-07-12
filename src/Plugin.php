@@ -13,11 +13,6 @@ class Plugin implements \Composer\Plugin\PluginInterface,
      */
     private $bundlesManager;
 
-    /**
-     * @var \Symfony\Component\Console\Input\InputInterface
-     */
-    private $commandInput;
-
     public function activate(\Composer\Composer $composer, \Composer\IO\IOInterface $io)
     {
         $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
@@ -26,37 +21,17 @@ class Plugin implements \Composer\Plugin\PluginInterface,
     public static function getSubscribedEvents()
     {
         return array(
-            \Composer\Plugin\PluginEvents::COMMAND => 'onCommandEvent',
-            \Composer\Script\ScriptEvents::PRE_INSTALL_CMD => 'installBundles',
-            \Composer\Script\ScriptEvents::PRE_UPDATE_CMD => 'updateBundles'
+            \Composer\Script\ScriptEvents::PRE_INSTALL_CMD => 'bootstrapBundles',
+            \Composer\Script\ScriptEvents::PRE_UPDATE_CMD => 'bootstrapBundles'
         );
-    }
-
-    public function onCommandEvent(\Composer\Plugin\CommandEvent $event)
-    {
-        $this->commandInput = $event->getInput();
     }
 
     /**
      * @throws \Exception
      */
-    public function installBundles()
+    public function bootstrapBundles()
     {
         $this->bundlesManager->bootstrap();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function updateBundles()
-    {
-        // @todo: re-install only when package config has changed (md5 calc for source + hash)
-        // @todo: if whole package gets changed, force all to be re-installed
-        $this->bundlesManager->bootstrap();
-
-        $this->bundlesManager->processPackages(
-            $this->commandInput->getArgument('packages')
-        );
     }
 
     public function getCapabilities()

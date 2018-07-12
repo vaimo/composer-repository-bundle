@@ -22,19 +22,26 @@ class Downloader
     }
 
     /**
-     * @param $package
+     * @param \Composer\Package\PackageInterface $package
+     * @param bool $reDownload
      * @throws \Exception
+     * @return bool
      */
-    public function download($package)
+    public function download(\Composer\Package\PackageInterface $package, $reDownload = false)
     {
-        $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
-
         $config = $package->getExtra();
 
+        $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
         $targetDir = trim($package->getTargetDir(), chr(32));
 
         try {
+            if (!$reDownload && file_exists($targetDir)) {
+                return false;
+            }
+
             $downloader->download($package, $targetDir);
+
+            return true;
         } catch (\Composer\Downloader\TransportException $e) {
             $message = sprintf(
                 'Transport failure %s while downloading from %s: %s',

@@ -97,11 +97,16 @@ mirrored.
 
 ## Installing packages from bundle
 
+Make sure that you have installed this plugin separately before you start installing packages from
+registered bundles.
+
 After bundles have been registered in composer.json, user can just install them as any other composer
-package. 
+package. Note that package versions are ignored, use dev-bundle instead. 
+
+    composer require magento/theme-frontend-venia:dev-default 
 
 Note that the deployed package will be mirrored to vendor folder, rather than copied. This is due to the 
-fact that the bundle itself is kept within composer cache rather than in the project root.   
+fact that the bundle itself is kept within composer cache rather than in the project root.
 
 ## Changelog 
 

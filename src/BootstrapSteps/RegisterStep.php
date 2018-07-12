@@ -61,27 +61,43 @@ class RegisterStep
 
         $repositoryManager = $this->composer->getRepositoryManager();
 
+        $names = array_keys($bundlePackageQueue);
+
         foreach ($bundlePackageQueue as $name => $config) {
             $owner = $config['owner'];
-
             $bundle = $bundles[$owner];
 
             $targetDir = trim($bundle->getTargetDir(), chr(32));
+
+            $this->io->write(
+                sprintf('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['md5'])
+            );
+
+            $this->io->write(
+                sprintf('    ~ Bundle: <comment>%s</comment>', $config['owner'])
+            );
 
             $repository = $repositoryManager->createRepository('path', array(
                 'url' => $config['path'],
                 'options' => array(
                     'symlink' => $config['symlink'],
                     'bundle-root' => $targetDir,
-                    'bundle-md5' => $config['md5']
+                    'md5' => $config['md5']
                 )
             ));
 
-            $this->io->write(
-                sprintf('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['owner'])
-            );
-
             $repositoryManager->addRepository($repository);
+
+            /** @var \Composer\Package\Package[] $packages */
+            $packages = $repository->getPackages();
+
+            foreach ($packages as $package) {
+                $package->replaceVersion('9999999-dev', 'dev-default');
+            }
+
+            if ($name !== end($names)) {
+                $this->io->write('');
+            }
         }
     }
 }
