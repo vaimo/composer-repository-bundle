@@ -52,18 +52,21 @@ class BundlesManager
     }
 
     /**
+     * @param bool $isVerbose
      * @throws \Exception
      */
-    public function bootstrap()
+    public function bootstrap($isVerbose = false)
     {
         if (!$bundles = $this->bundlesRepository->getPackages()) {
             return;
         }
 
         foreach ($this->bootstrapSteps as $step) {
-            $step->execute($bundles);
+            $step->execute($bundles, $isVerbose);
 
-            $this->io->write('');
+            if ($isVerbose) {
+                $this->io->write('');
+            }
         }
     }
 }

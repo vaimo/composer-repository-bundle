@@ -45,7 +45,7 @@ class PhpFileAnalyser
         $result = null;
 
         while ($token = current($tokens)) {
-            list($token, $value) = is_array($token) ? $token : [$token, $token];
+            list($token, $value) = is_array($token) ? $token : array($token, $token);
 
             if (in_array($token, (array)$typeFilter, true)) {
                 $result .= $value;

@@ -9,6 +9,7 @@ interface BootstrapStepInterface
 {
     /**
      * @param array $bundles
+     * @param bool $isVerbose
      */
-    public function execute(array $bundles);
+    public function execute(array $bundles, $isVerbose);
 }

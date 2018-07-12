@@ -3,7 +3,7 @@
  * Copyright © Vaimo Group. All rights reserved.
  * See LICENSE_VAIMO.txt for license details.
  */
-namespace Vaimo\ComposerRepositoryBundle\Composer\Commands;
+namespace Vaimo\ComposerRepositoryBundle\Commands;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

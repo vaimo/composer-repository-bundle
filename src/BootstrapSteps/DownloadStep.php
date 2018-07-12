@@ -29,7 +29,7 @@ class DownloadStep
         $this->io = $io;
     }
 
-    public function execute(array $bundles)
+    public function execute(array $bundles, $isVerbose)
     {
         $downloadManager = $this->composer->getDownloadManager();
 

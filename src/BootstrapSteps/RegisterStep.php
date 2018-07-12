@@ -36,9 +36,11 @@ class RegisterStep
         $this->bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector();
     }
 
-    public function execute(array $bundles)
+    public function execute(array $bundles, $isVerbose)
     {
-        $this->io->write('<info>Configuring bundle packages</info>');
+        $output = new \Vaimo\ComposerRepositoryBundle\Console\Output($this->io, $isVerbose);
+
+        $output->info('Configuring bundle packages');
 
         $bundlePackageQueue = array();
 
@@ -57,7 +59,7 @@ class RegisterStep
             );
         }
 
-        $this->io->write('<info>Registering bundle package endpoints</info>');
+        $output->info('Registering bundle package endpoints');
 
         $repositoryManager = $this->composer->getRepositoryManager();
 
@@ -69,13 +71,9 @@ class RegisterStep
 
             $targetDir = trim($bundle->getTargetDir(), chr(32));
 
-            $this->io->write(
-                sprintf('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['md5'])
-            );
+            $output->raw('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['md5']);
 
-            $this->io->write(
-                sprintf('    ~ Bundle: <comment>%s</comment>', $config['owner'])
-            );
+            $output->raw('    ~ Bundle: <comment>%s</comment>', $config['owner']);
 
             $repository = $repositoryManager->createRepository('path', array(
                 'url' => $config['path'],
@@ -96,7 +94,7 @@ class RegisterStep
             }
 
             if ($name !== end($names)) {
-                $this->io->write('');
+                $output->nl();
             }
         }
     }

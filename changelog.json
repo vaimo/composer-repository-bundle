@@ -2,7 +2,9 @@
     "1.0.0": {
         "feature": [
             "allow packages to be installed from sub-folders of repositories",
-            "allow packages to be installed from sub-folders of zip files"
+            "allow packages to be installed from sub-folders of zip files",
+            "allow 'update' to pull in changes from the bundle when bundle files have changed",
+            "introduced new command group: 'bundle', to allow fetching information about the bundle packages"
         ]
     }
 }

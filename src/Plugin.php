@@ -31,7 +31,7 @@ class Plugin implements \Composer\Plugin\PluginInterface,
      */
     public function bootstrapBundles()
     {
-        $this->bundlesManager->bootstrap();
+        $this->bundlesManager->bootstrap(true);
     }
 
     public function getCapabilities()
