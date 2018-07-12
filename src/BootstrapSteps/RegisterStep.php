@@ -44,6 +44,7 @@ class RegisterStep
 
         foreach ($bundles as $bundleName => $bundle) {
             $packages = $this->bundlePackageDefCollector->collectBundlePackageDefinitions($bundle);
+
             $config = $bundle->getExtra();
 
             $updates = array_fill_keys(array_keys($packages), array(
@@ -71,7 +72,8 @@ class RegisterStep
                 'url' => $config['path'],
                 'options' => array(
                     'symlink' => $config['symlink'],
-                    'bundle-root' => $targetDir
+                    'bundle-root' => $targetDir,
+                    'bundle-md5' => $config['md5']
                 )
             ));
 

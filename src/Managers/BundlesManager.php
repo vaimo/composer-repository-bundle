@@ -5,8 +5,10 @@
  */
 namespace Vaimo\ComposerRepositoryBundle\Managers;
 
+use Symfony\Component\Console\Output\OutputInterface;
 use Vaimo\ComposerRepositoryBundle\BootstrapSteps as Steps;
 use Vaimo\ComposerRepositoryBundle\Repositories\BundlesRepository;
+use Vaimo\ComposerRepositoryBundle\Composer\Utils\OutputUtils;
 
 class BundlesManager
 {
@@ -65,8 +67,33 @@ class BundlesManager
         }
     }
 
-    public function processPackage()
+    public function processPackages(array $packages)
     {
+        $repository = $this->composer->getRepositoryManager()->getLocalRepository();
+        $installationManager = $this->composer->getInstallationManager();
 
+        foreach ($packages as $name) {
+            $package = $repository->findPackage($name, '*');
+
+            if (!$package) {
+                continue;
+            }
+
+            $options = $package->getTransportOptions();
+
+            if (!isset($options['bundle-root'])) {
+                continue;
+            }
+
+            $operation = new \Composer\DependencyResolver\Operation\UninstallOperation($package);
+
+            $verbosityLevel = OutputUtils::resetVerbosity($this->io, OutputInterface::VERBOSITY_QUIET);
+
+            try {
+                $installationManager->uninstall($repository, $operation);
+            } finally {
+                OutputUtils::resetVerbosity($this->io, $verbosityLevel);
+            }
+        }
     }
 }

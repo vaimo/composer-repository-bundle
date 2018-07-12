@@ -76,19 +76,20 @@ class BundlesRepository
         );
 
         foreach ($bundles as $bundleName => $bundle) {
-            $bundleUrl = $bundle['url'];
+            $uid = md5($bundle['url'] . ':' . isset($bundle['reference']) ? $bundle['reference'] : '0');
 
             $targetDir = rtrim($cache->getRoot(), DIRECTORY_SEPARATOR)
                 . DIRECTORY_SEPARATOR
-                . md5($bundleUrl);
+                . $uid;
 
             $package = $this->packageFactory->create(
                 $bundleName,
-                $bundleUrl,
+                $bundle['url'],
                 isset($bundle['target']) ? $rootDir . DIRECTORY_SEPARATOR . $bundle['target'] : $targetDir,
                 isset($bundle['reference']) ? $bundle['reference'] : null
             );
 
+            $bundle['md5'] = $uid;
             $bundle['name'] = $bundleName;
 
             $package->setExtra($bundle);

@@ -10,22 +10,22 @@ use Vaimo\ComposerRepositoryBundle\Composer\Config as ComposerConfig;
 class PackagesCollector
 {
     /**
-     * @var \Vaimo\ComposerRepositoryBundle\Analysers\PhpFileAnalyser
+     * @var \Vaimo\ComposerRepositoryBundle\FileSystem\ChecksumCalculator
      */
-    private $phpFileAnalyser;
+    private $checksumCalculator;
 
     /**
-     * @var \Vaimo\ComposerRepositoryBundle\FileSystem\FilesCollector
+     * @var \Vaimo\ComposerRepositoryBundle\Generators\PackageConfigGenerator
      */
-    private $filesCollector;
+    private $packageConfigGenerator;
 
     public function __construct()
     {
-        $this->phpFileAnalyser = new \Vaimo\ComposerRepositoryBundle\Analysers\PhpFileAnalyser();
-        $this->filesCollector = new \Vaimo\ComposerRepositoryBundle\FileSystem\FilesCollector();
+        $this->checksumCalculator = new \Vaimo\ComposerRepositoryBundle\FileSystem\ChecksumCalculator();
+        $this->packageConfigGenerator = new \Vaimo\ComposerRepositoryBundle\Generators\PackageConfigGenerator();
     }
 
-    public function collectBundlePackageDefinitions($package)
+    public function collectBundlePackageDefinitions(\Composer\Package\PackageInterface $package)
     {
         $config = $package->getExtra();
 
@@ -34,7 +34,7 @@ class PackagesCollector
         $paths = $this->getPackageDefinitionPaths($package);
 
         foreach ($paths as $name => $path) {
-            $packageDefinition = $this->getPackageConfig(
+            $packageDefinition = $this->packageConfigGenerator->generate(
                 $name,
                 $path,
                 array_replace(array(
@@ -52,9 +52,12 @@ class PackagesCollector
 
             $packageName = $packageDefinition['name'];
 
+            $packagePath = dirname($path);
+
             $definitions[$packageName] = array(
                 'owner' => $config['name'],
-                'path' => dirname($path),
+                'path' => $packagePath,
+                'md5' => $this->checksumCalculator->calculate($packagePath),
                 'config' => $packageDefinition
             );
         }
@@ -62,7 +65,7 @@ class PackagesCollector
         return $definitions;
     }
 
-    private function getPackageDefinitionPaths($package)
+    private function getPackageDefinitionPaths(\Composer\Package\PackageInterface $package)
     {
         $config = $package->getExtra();
         $targetDir = trim($package->getTargetDir(), chr(32));
@@ -91,63 +94,5 @@ class PackagesCollector
         }
 
         return $paths;
-    }
-
-    private function getPackageConfig($name, $packageDefinitionPath, array $defaults)
-    {
-        $packagePath = dirname($packageDefinitionPath);
-
-        if (file_exists($packageDefinitionPath)) {
-            $packageJson = file_get_contents($packageDefinitionPath);
-            $packageDefinition = json_decode($packageJson, true);
-        } else {
-            $packageDefinition = array_replace(array('name' => $name), $defaults);
-        }
-
-        $files = $this->filesCollector->collectFilesWithExtension($packagePath, 'php');
-
-        $namespace = $this->resolveSharedNamespace($files);
-
-        if ($namespace) {
-            $packageDefinition = array_replace_recursive(array(
-                ComposerConfig::AUTOLOAD => array(
-                    ComposerConfig::PSR4_CONFIG => array(
-                        $namespace => ''
-                    )
-                )
-            ), $packageDefinition);
-        }
-
-        return $packageDefinition;
-    }
-
-    private function resolveSharedNamespace(array $files)
-    {
-        $classes = array();
-
-        foreach ($files as $file) {
-            $classes = array_merge(
-                $classes,
-                array_filter($this->phpFileAnalyser->collectPhpClasses($file))
-            );
-        }
-
-        $classParts = array_filter(explode('\\', reset($classes)));
-
-        $namespace = '';
-
-        foreach ($classParts as $item) {
-            $lookup = $namespace . $item;
-
-            $result = preg_grep('#^' . preg_quote($lookup, '#') . '#', $classes);
-
-            if ($result !== $classes) {
-                break;
-            }
-
-            $namespace = $lookup . '\\';
-        }
-
-        return $namespace;
     }
 }

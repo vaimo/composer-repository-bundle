@@ -7,7 +7,7 @@ namespace Vaimo\ComposerRepositoryBundle\FileSystem;
 
 class FilesCollector
 {
-    public function collectFilesWithExtension($path, $extension)
+    public function collectFiles($path, $extension = false)
     {
         $recursiveIterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($path)
@@ -20,7 +20,7 @@ class FilesCollector
                 continue;
             }
 
-            if (pathinfo($fileInfo->getPathname(), PATHINFO_EXTENSION) !== $extension) {
+            if ($extension && pathinfo($fileInfo->getPathname(), PATHINFO_EXTENSION) !== $extension) {
                 continue;
             }
 

@@ -38,11 +38,9 @@ class PathInfo
     {
         $packageRepository = $this->repositoryManager->getLocalRepository();
 
-        if (!$matches = $packageRepository->findPackages($packageName)) {
+        if (!$package = $packageRepository->findPackage($packageName, '*')) {
             return array();
         }
-
-        $package = reset($matches);
 
         $transportOptions = $package->getTransportOptions();
 
