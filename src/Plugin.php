@@ -9,19 +9,20 @@ class Plugin implements \Composer\Plugin\PluginInterface,
     \Composer\EventDispatcher\EventSubscriberInterface, \Composer\Plugin\Capable
 {
     /**
-     * @var \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager
-     */
-    private $bundlesManager;
-
-    /**
      * @var \Composer\IO\IOInterface
      */
     private $io;
 
+    /**
+     * @var \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager
+     */
+    private $bundlesManager;
+
     public function activate(\Composer\Composer $composer, \Composer\IO\IOInterface $io)
     {
-        $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
         $this->io = $io;
+
+        $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
     }
 
     public static function getSubscribedEvents()

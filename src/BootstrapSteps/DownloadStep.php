@@ -33,16 +33,14 @@ class DownloadStep
     {
         $downloadManager = $this->composer->getDownloadManager();
 
-        $this->io->write('<info>Downloading bundles</info>');
+        $this->io->write('<info>Configuring bundles</info>');
 
-        $downloader = new \Vaimo\ComposerRepositoryBundle\Package\Downloader($downloadManager);
+        $rootDir = dirname($this->composer->getConfig()->getConfigSource()->getName());
+
+        $downloader = new \Vaimo\ComposerRepositoryBundle\Package\Downloader($downloadManager, $rootDir);
 
         try {
-            $results = array_map(array($downloader, 'download'), $bundles);
-
-            if (!array_filter($results)) {
-                $this->io->write('All bundles already downloaded');
-            }
+            array_map(array($downloader, 'download'), $bundles);
         } catch (\Exception $e) {
             $this->io->error(sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage()));
         }

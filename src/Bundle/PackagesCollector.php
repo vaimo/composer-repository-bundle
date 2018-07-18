@@ -10,6 +10,11 @@ use Vaimo\ComposerRepositoryBundle\Composer\Config as ComposerConfig;
 class PackagesCollector
 {
     /**
+     * @var \Composer\Composer
+     */
+    private $composer;
+
+    /**
      * @var \Vaimo\ComposerRepositoryBundle\FileSystem\ChecksumCalculator
      */
     private $checksumCalculator;
@@ -19,8 +24,10 @@ class PackagesCollector
      */
     private $packageConfigGenerator;
 
-    public function __construct()
-    {
+    public function __construct(
+        \Composer\Composer $composer
+    ) {
+        $this->composer = $composer;
         $this->checksumCalculator = new \Vaimo\ComposerRepositoryBundle\FileSystem\ChecksumCalculator();
         $this->packageConfigGenerator = new \Vaimo\ComposerRepositoryBundle\Generators\PackageConfigGenerator();
     }
@@ -42,12 +49,7 @@ class PackagesCollector
                 ), $config['package'])
             );
 
-            $packageJson = json_encode($packageDefinition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
-            file_put_contents($path, $packageJson);
-
             $packageName = $packageDefinition['name'];
-
             $packagePath = dirname($path);
 
             $definitions[$packageName] = array(
@@ -64,7 +66,13 @@ class PackagesCollector
     private function getPackageDefinitionPaths(\Composer\Package\PackageInterface $package)
     {
         $config = $package->getExtra();
+
         $targetDir = trim($package->getTargetDir(), chr(32));
+
+        if ($config['local']) {
+            $rootDir = dirname($this->composer->getConfig()->getConfigSource()->getName());
+            $targetDir = rtrim($rootDir . DIRECTORY_SEPARATOR . $targetDir, DIRECTORY_SEPARATOR);
+        }
 
         $paths = array();
 

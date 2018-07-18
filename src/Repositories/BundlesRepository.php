@@ -75,22 +75,61 @@ class BundlesRepository
             $this->composer->getConfig()->get(ComposerConfig::CACHE_DIR)
         );
 
-        foreach ($bundles as $bundleName => $bundle) {
-            $uid = md5($bundle['url'] . ':' . isset($bundle['reference']) ? $bundle['reference'] : '0');
+        $cacheRoot = rtrim($cache->getRoot(), DIRECTORY_SEPARATOR);
 
-            $targetDir = rtrim($cache->getRoot(), DIRECTORY_SEPARATOR)
-                . DIRECTORY_SEPARATOR
-                . $uid;
+        foreach ($bundles as $bundleName => $bundle) {
+            if (isset($bundle['url'])) {
+                $source = $bundle['url'];
+            } else if (isset($bundle['source'])) {
+                $source = $bundle['source'];
+            } else {
+                $source = '';
+            }
+
+            $uid = md5(
+                serialize(array($source, isset($bundle['reference']) ? $bundle['reference'] : '0'))
+            );
+
+            $isLocalBundle = is_dir($rootDir . DIRECTORY_SEPARATOR . $source);
+
+            if (!$isLocalBundle) {
+                $target = isset($bundle['target'])
+                    ? $rootDir . DIRECTORY_SEPARATOR . $bundle['target']
+                    : ($cacheRoot . DIRECTORY_SEPARATOR . $uid);
+            } else {
+                $target = $source;
+            }
 
             $package = $this->packageFactory->create(
                 $bundleName,
-                $bundle['url'],
-                isset($bundle['target']) ? $rootDir . DIRECTORY_SEPARATOR . $bundle['target'] : $targetDir,
+                $source,
+                $target,
                 isset($bundle['reference']) ? $bundle['reference'] : null
             );
 
             $bundle['md5'] = $uid;
             $bundle['name'] = $bundleName;
+            $bundle['local'] = $isLocalBundle;
+
+            if (!isset($bundle['paths'])) {
+                $bundle['paths'] = array('');
+            }
+
+            if (!is_array($bundle['paths'])) {
+                throw new \Exception(
+                    sprintf('Incorrect configuration for bundle "%s": value of "paths" should be an array', $bundleName)
+                );
+            }
+
+            if (!$source) {
+                $bundle['paths'] = array_filter($bundle['paths']);
+            }
+
+            if (!$source && !$bundle['paths']) {
+                throw new \Exception(
+                    sprintf('Incorrect configuration for bundle "%s": blank value for both source and paths', $bundleName)
+                );
+            }
 
             $package->setExtra($bundle);
 

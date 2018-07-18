@@ -13,35 +13,48 @@ class Downloader
     private $downloadManager;
 
     /**
+     * @var string
+     */
+    private $projectRoot;
+
+    /**
      * @param \Composer\Downloader\DownloadManager $downloadManager
+     * @param string $projectRoot
      */
     public function __construct(
-        \Composer\Downloader\DownloadManager $downloadManager
+        \Composer\Downloader\DownloadManager $downloadManager,
+        $projectRoot
     ) {
         $this->downloadManager = $downloadManager;
+        $this->projectRoot = $projectRoot;
     }
 
     /**
      * @param \Composer\Package\PackageInterface $package
-     * @param bool $reDownload
      * @throws \Exception
-     * @return bool
      */
-    public function download(\Composer\Package\PackageInterface $package, $reDownload = false)
+    public function download(\Composer\Package\PackageInterface $package)
     {
         $config = $package->getExtra();
 
-        $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
         $targetDir = trim($package->getTargetDir(), chr(32));
 
         try {
-            if (!$reDownload && file_exists($targetDir)) {
-                return false;
+            $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
+        } catch (\InvalidArgumentException $e) {
+            if (is_dir($this->projectRoot . DIRECTORY_SEPARATOR . $package->getSourceUrl())) {
+                return;
+            }
+
+            throw $e;
+        }
+
+        try {
+            if (file_exists($targetDir)) {
+                return;
             }
 
             $downloader->download($package, $targetDir);
-
-            return true;
         } catch (\Composer\Downloader\TransportException $e) {
             $message = sprintf(
                 'Transport failure %s while downloading from %s: %s',

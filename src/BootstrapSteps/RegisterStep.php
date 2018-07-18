@@ -33,14 +33,16 @@ class RegisterStep
         $this->composer = $composer;
         $this->io = $io;
 
-        $this->bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector();
+        $this->bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector(
+            $this->composer
+        );
     }
 
     public function execute(array $bundles, $isVerbose)
     {
         $output = new \Vaimo\ComposerRepositoryBundle\Console\Output($this->io, $isVerbose);
 
-        $output->info('Configuring bundle packages');
+        $output->info('Configuring packages');
 
         $bundlePackageQueue = array();
 
@@ -49,8 +51,10 @@ class RegisterStep
 
             $config = $bundle->getExtra();
 
+            $isLocalPackage = isset($config['local']) || $config['local'];
+
             $updates = array_fill_keys(array_keys($packages), array(
-                'symlink' => isset($config['target'])
+                'symlink' => $isLocalPackage || isset($config['target'])
             ));
 
             $bundlePackageQueue = array_replace(
@@ -59,7 +63,7 @@ class RegisterStep
             );
         }
 
-        $output->info('Registering bundle package endpoints');
+        $output->info('Registering package endpoints');
 
         $repositoryManager = $this->composer->getRepositoryManager();
 
@@ -72,7 +76,6 @@ class RegisterStep
             $targetDir = trim($bundle->getTargetDir(), chr(32));
 
             $output->raw('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['md5']);
-
             $output->raw('    ~ Bundle: <comment>%s</comment>', $config['owner']);
 
             $repository = $repositoryManager->createRepository('path', array(

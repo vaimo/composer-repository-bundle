@@ -29,8 +29,7 @@ Can be done against zip file ...
     "extra": {
         "bundles": {
             "magento-research/pwa-studio": {
-                "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz",
-                "paths": ["packages"]
+                "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz"
             }
         }
     }
@@ -45,8 +44,44 @@ Same can be done against repository (in which case either branch name of change-
         "bundles": {
             "magento-research/pwa-studio": {
                 "url": "git@github.com:magento-research/pwa-studio.git",
-                "paths": ["packages"],
                 "reference": "9c6dfcc955df4b88218cd6c0eb6d0260df27117d"
+            }
+        }
+    }
+}
+```
+
+The plugin can also be used to configure local project-embedded bundle folders from where modules will
+become installable.
+
+```json
+{
+    "extra": {
+        "bundles": {
+            "my/project_name": {
+                "source": "modules"
+            }
+        }
+    }
+}
+```
+
+Which would allow any module to be installed from <project-root>/modules - note that the modules from a local 
+bundle like this will sym-linked instead of being mirrored. Not configuring "source" at all will cause 
+the project root to be considered as a folder for installation (can be combined with sub-folder config).
+
+## Configuring bundle sub-folders
+
+By default, the bundle repository will consider every sub-folder on the main level of the bundle as potential
+installable package, in case the packages are available in some sub-folder(s), relative paths can be defined.
+
+```json
+{
+    "extra": {
+        "bundles": {
+            "magento-research/pwa-studio": {
+                "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz",
+                "paths": ["packages"]
             }
         }
     }

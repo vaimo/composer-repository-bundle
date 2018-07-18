@@ -1,4 +1,17 @@
 {
+    "1.2.0": {
+        "feature": [
+            "allow local folders to be defined as bundles (without the need to download anything)",
+            "improved bundle configuration validation"
+        ],
+        "fix": [
+            "do not modify/re-save composer.json of bundled packages if there are no changes to be made to them",
+            "do not configure PSR-4 if there's already configuration in place"
+        ],
+        "maintenance": [
+            "log output modified towards being less noisy when nothing is changed"
+        ]
+    },
     "1.1.0": {
         "feature": [
             "new command added to list bundles and the packages they provide",
