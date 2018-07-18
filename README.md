@@ -3,7 +3,7 @@
 Allows composer package installation from repositories or zip files that have multiple packages 
 inside of them. 
 
-## Configuration: hard-points
+## Configuration: overview
 
 Environment variables can be defined as key value pairs in the project's composer.json
 
