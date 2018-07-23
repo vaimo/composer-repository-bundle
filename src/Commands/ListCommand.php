@@ -34,7 +34,10 @@ class ListCommand extends \Composer\Command\BaseCommand
         );
 
         $packages = $bundlesRepository->getPackages();
-        $bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector();
+
+        $bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector(
+            $composer
+        );
 
         $repository = $composer->getLocker()->getLockedRepository();
 
@@ -55,7 +58,7 @@ class ListCommand extends \Composer\Command\BaseCommand
 
                 if ($package) {
                     $io->write(
-                        sprintf('  ~ Locked on <comment>%s</comment>', $package->getPrettyVersion())
+                        sprintf('  ~ Locked as <comment>%s</comment>', $package->getPrettyVersion())
                     );
                 }
             }

@@ -67,6 +67,13 @@ class RegisterStep
 
         $repositoryManager = $this->composer->getRepositoryManager();
 
+        $rootPackage = $this->composer->getPackage();
+
+        $rootRequires = array_replace(
+            $rootPackage->getRequires(),
+            $rootPackage->getDevRequires()
+        );
+
         $names = array_keys($bundlePackageQueue);
 
         foreach ($bundlePackageQueue as $name => $config) {
@@ -93,7 +100,22 @@ class RegisterStep
             $packages = $repository->getPackages();
 
             foreach ($packages as $package) {
-                $package->replaceVersion('9999999-dev', 'dev-default');
+                $packageName = $package->getName();
+
+                if (isset($rootRequires[$packageName])) {
+                    /** @var \Composer\Package\Link $rootRequire */
+                    $rootRequire = $rootRequires[$packageName];
+
+                    /** @var \Composer\Semver\Constraint\Constraint $constraint */
+                    $constraint = $rootRequire->getConstraint();
+
+                    $version = ltrim((string)$constraint, ' =<>');
+                    $prettyVersion = $constraint->getPrettyString();
+
+                    $package->replaceVersion($version, $prettyVersion);
+                } else {
+                    $package->replaceVersion('9999999-dev', 'dev-default');
+                }
             }
 
             if ($name !== end($names)) {

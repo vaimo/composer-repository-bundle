@@ -48,8 +48,11 @@ class DeployCommand extends \Composer\Command\BaseCommand
         foreach ($packageNames as $package) {
             $package = $repository->findPackage($package, ComposerConfig::CONSTRAINT_ANY);
 
-            $operation = new \Composer\DependencyResolver\Operation\InstallOperation($package);
 
+            $operation = new \Composer\DependencyResolver\Operation\UninstallOperation($package);
+            $composer->getInstallationManager()->uninstall($repository, $operation);
+
+            $operation = new \Composer\DependencyResolver\Operation\InstallOperation($package);
             $composer->getInstallationManager()->install($repository, $operation);
         }
     }

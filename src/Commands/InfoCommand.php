@@ -27,9 +27,12 @@ class InfoCommand extends \Composer\Command\BaseCommand
     {
         $packageName = $input->getArgument('name');
 
+        $composer = $this->getComposer();
+
         $pathInfo = new \Vaimo\ComposerRepositoryBundle\Bundle\PathInfo(
-            $this->getComposer()->getRepositoryManager(),
-            $this->getComposer()->getInstallationManager()
+            $composer->getRepositoryManager(),
+            $composer->getInstallationManager(),
+            rtrim(dirname($composer->getConfig()->getConfigSource()->getName()), DIRECTORY_SEPARATOR)
         );
 
         try {

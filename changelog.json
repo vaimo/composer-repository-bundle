@@ -1,4 +1,14 @@
 {
+    "1.3.0": {
+        "feature": [
+            "allow package installation on any version when dealing with local package, rather than forcing user to use dev-default"
+        ],
+        "fix": [
+            "updated bundle:info command output; name had a wrong value (origin path) under certain circumstances (local bundle)",
+            "bundle list feature crash: one dependency missing a constructor argument",
+            "bundle deploy not recognizing sym-linked packages"
+        ]
+    },
     "1.2.0": {
         "feature": [
             "allow local folders to be defined as bundles (without the need to download anything)",

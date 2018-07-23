@@ -138,10 +138,17 @@ registered bundles.
 After bundles have been registered in composer.json, user can just install them as any other composer
 package. Note that package versions are ignored, use dev-bundle instead. 
 
-    composer require magento/theme-frontend-venia:dev-default 
+    composer require magento/theme-frontend-venia:1.0.0 
 
-Note that the deployed package will be mirrored to vendor folder, rather than copied. This is due to the 
-fact that the bundle itself is kept within composer cache rather than in the project root.
+Note that the version used for the require is 100% up to the developer as the package version constraint 
+check is bypassed due to the package being local.
+
+## Bundle package deployment
+
+There are two ways that the package might end up being deployed to the project's vendor:
+
+* sym-linked - done when bundle situated under the project root (bundle is part of the project).
+* mirrored - done when bundle situates in composer package cache (bundle is part of global composer). 
 
 ## Changelog 
 

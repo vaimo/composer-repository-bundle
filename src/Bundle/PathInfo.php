@@ -20,15 +20,23 @@ class PathInfo
     private $installationManager;
 
     /**
+     * @var string
+     */
+    private $rootDir;
+
+    /**
      * @param \Composer\Repository\RepositoryManager $repositoryManager
      * @param \Composer\Installer\InstallationManager $installationManager
+     * @param string $rootDir
      */
     public function __construct(
         \Composer\Repository\RepositoryManager $repositoryManager,
-        \Composer\Installer\InstallationManager $installationManager
+        \Composer\Installer\InstallationManager $installationManager,
+        $rootDir
     ) {
         $this->repositoryManager = $repositoryManager;
         $this->installationManager = $installationManager;
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -46,10 +54,17 @@ class PathInfo
 
         $transportOptions = $package->getTransportOptions();
 
+        $bundleRoot = $transportOptions['bundle-root'];
+
+        if (!is_dir($bundleRoot) && is_dir($this->rootDir . DIRECTORY_SEPARATOR . $bundleRoot)) {
+            $bundleRoot = $this->rootDir . DIRECTORY_SEPARATOR . $bundleRoot;
+        }
+
         return array(
-            'owner' => $transportOptions['bundle-root'],
+            'name' => $package->getName(),
+            'owner' => is_dir($bundleRoot) ? realpath($bundleRoot) : $bundleRoot,
             'origin' => $package->getDistUrl(),
-            'name' => $this->installationManager->getInstallPath($package)
+            'target' => $this->installationManager->getInstallPath($package)
         );
     }
 }
