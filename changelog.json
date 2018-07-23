@@ -1,4 +1,9 @@
 {
+    "1.3.1": {
+        "maintenance": [
+            "minor updated to packages's meta-data"
+        ]
+    },
     "1.3.0": {
         "feature": [
             "allow package installation on any version when dealing with local package, rather than forcing user to use dev-default"
