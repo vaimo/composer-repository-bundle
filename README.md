@@ -51,7 +51,7 @@ Same can be done against repository (in which case either branch name of change-
 }
 ```
 
-## Configuration: bundle as local directory
+## Configuration: local directory as repository
 
 The plugin can also be used to configure local project-embedded bundle folders from where modules will
 become installable.
@@ -68,11 +68,13 @@ become installable.
 }
 ```
 
-This allows any module to be installed from <project-root>/modules - note that the modules from a local 
-bundle like this will sym-linked instead of being mirrored. Not configuring "source" at all will cause 
-the project root to be considered as a folder for installation (can be combined with sub-folder config).
+This allows any module to be installed from <project-root>/modules. Note that the modules from a local 
+bundle like this will symlinked instead of being mirrored. 
 
-## Configuration: defining bundle sub-folders as package root
+Not configuring "source" at all will cause the project root to be considered as a folder for installation 
+(can be combined with sub-folder config).
+
+## Configuration: defining bundle sub-folders as repository root
 
 By default, the bundle repository will consider every sub-folder on the main level of the bundle as potential
 installable package, in case the packages are available in some sub-folder(s), relative paths can be defined.
@@ -149,7 +151,7 @@ check is bypassed due to the package being local.
 
 There are two ways that the package might end up being deployed to the project's vendor:
 
-* sym-linked - done when bundle situated under the project root (bundle is part of the project).
+* symlinked - done when bundle situated under the project root (bundle is part of the project).
 * mirrored - done when bundle situates in composer package cache (bundle is part of global composer). 
 
 ## Changelog 
