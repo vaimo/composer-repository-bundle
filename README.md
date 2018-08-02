@@ -20,7 +20,7 @@ These values will be declared for system-wide use. The main idea of the module i
 a way to pre-configure any flags for any of the composer plugins in case the flag setting
 has not been properly exposed to the end-user.
   
-## Configuring bundle
+## Configuration: adding bundle definition
 
 Can be done against zip file ...
 
@@ -51,6 +51,8 @@ Same can be done against repository (in which case either branch name of change-
 }
 ```
 
+## Configuration: bundle as local directory
+
 The plugin can also be used to configure local project-embedded bundle folders from where modules will
 become installable.
 
@@ -66,11 +68,11 @@ become installable.
 }
 ```
 
-Which would allow any module to be installed from <project-root>/modules - note that the modules from a local 
+This allows any module to be installed from <project-root>/modules - note that the modules from a local 
 bundle like this will sym-linked instead of being mirrored. Not configuring "source" at all will cause 
 the project root to be considered as a folder for installation (can be combined with sub-folder config).
 
-## Configuring bundle sub-folders
+## Configuration: defining bundle sub-folders as package root
 
 By default, the bundle repository will consider every sub-folder on the main level of the bundle as potential
 installable package, in case the packages are available in some sub-folder(s), relative paths can be defined.
