@@ -1,7 +1,7 @@
 # composer-repository-bundle
 
 Allows composer package installation from repositories or zip files that have multiple packages 
-inside of them. 
+inside of them or declare certain folder within the project as local repository.
 
 ## Configuration: overview
 
