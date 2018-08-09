@@ -1,7 +1,7 @@
 # composer-repository-bundle
 
 Allows composer package installation from repositories or zip files that have multiple packages 
-inside of them. 
+inside of them or declare certain folder within the project as local repository.
 
 ## Configuration: overview
 
@@ -20,7 +20,7 @@ These values will be declared for system-wide use. The main idea of the module i
 a way to pre-configure any flags for any of the composer plugins in case the flag setting
 has not been properly exposed to the end-user.
   
-## Configuring bundle
+## Configuration: adding bundle definition
 
 Can be done against zip file ...
 
@@ -51,6 +51,8 @@ Same can be done against repository (in which case either branch name of change-
 }
 ```
 
+## Configuration: local directory as repository
+
 The plugin can also be used to configure local project-embedded bundle folders from where modules will
 become installable.
 
@@ -66,11 +68,13 @@ become installable.
 }
 ```
 
-Which would allow any module to be installed from <project-root>/modules - note that the modules from a local 
-bundle like this will sym-linked instead of being mirrored. Not configuring "source" at all will cause 
-the project root to be considered as a folder for installation (can be combined with sub-folder config).
+This allows any module to be installed from <project-root>/modules. Note that the modules from a local 
+bundle like this will symlinked instead of being mirrored. 
 
-## Configuring bundle sub-folders
+Not configuring "source" at all will cause the project root to be considered as a folder for installation 
+(can be combined with sub-folder config).
+
+## Configuration: defining bundle sub-folders as repository root
 
 By default, the bundle repository will consider every sub-folder on the main level of the bundle as potential
 installable package, in case the packages are available in some sub-folder(s), relative paths can be defined.
@@ -175,7 +179,7 @@ this case, the installation would be:
 
 There are two ways that the package might end up being deployed to the project's vendor:
 
-* sym-linked - done when bundle situated under the project root (bundle is part of the project).
+* symlinked - done when bundle situated under the project root (bundle is part of the project).
 * mirrored - done when bundle situates in composer package cache (bundle is part of global composer). 
 
 ## Changelog 
