@@ -29,7 +29,13 @@ class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capab
 
         $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
 
-        $input = new \Symfony\Component\Console\Input\ArgvInput();
+        try {
+            $input = new \Symfony\Component\Console\Input\ArgvInput();
+        } catch (\Exception $e) {
+            // There are situations where composer is accessed from non-CLI entry points,
+            // which will cause $argv not to be available, resulting a crash.
+            return;
+        }
 
         if (!in_array($input->getFirstArgument(), $this->specialCaseCommands)) {
             return;

@@ -1,4 +1,9 @@
 {
+    "1.4.1": {
+        "fix": [
+            "prevent a crash when accessing composer from non-cli environments due to accessing argv on the moment of plugin activation"
+        ]
+    },
     "1.4.0": {
         "feature": [
             "allow shorter declaration of local project-specific repositories"
