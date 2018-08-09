@@ -5,7 +5,7 @@
  */
 namespace Vaimo\ComposerRepositoryBundle\BootstrapSteps;
 
-class DownloadStep
+class DownloadStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\BootstrapStepInterface
 {
     /**
      * @var \Composer\Composer
@@ -18,6 +18,11 @@ class DownloadStep
     private $io;
 
     /**
+     * @var \Vaimo\ComposerRepositoryBundle\Console\Logger
+     */
+    private $output;
+
+    /**
      * @param \Composer\Composer $composer
      * @param \Composer\IO\IOInterface $io
      */
@@ -27,22 +32,24 @@ class DownloadStep
     ) {
         $this->composer = $composer;
         $this->io = $io;
+
+        $this->output = new \Vaimo\ComposerRepositoryBundle\Console\Logger($this->io);
     }
 
-    public function execute(array $bundles, $isVerbose)
+    public function execute(array $bundles)
     {
         $downloadManager = $this->composer->getDownloadManager();
 
-        $this->io->write('<info>Configuring bundles</info>');
+        $this->output->info('Configuring bundles');
 
-        $rootDir = dirname($this->composer->getConfig()->getConfigSource()->getName());
-
-        $downloader = new \Vaimo\ComposerRepositoryBundle\Package\Downloader($downloadManager, $rootDir);
+        $downloader = new \Vaimo\ComposerRepositoryBundle\Package\Downloader($downloadManager);
 
         try {
             array_map(array($downloader, 'download'), $bundles);
         } catch (\Exception $e) {
-            $this->io->error(sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage()));
+            $this->io->error(
+                sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage())
+            );
         }
     }
 }

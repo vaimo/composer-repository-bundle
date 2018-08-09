@@ -65,7 +65,7 @@ class BundlesRepository
 
         $bundles = $this->definitionCollector->collectBundleDefinitions($packages);
 
-        $rootDir = dirname($this->composer->getConfig()->getConfigSource()->getName());
+        $rootDir = getcwd();
 
         $bundlePackages = array();
 

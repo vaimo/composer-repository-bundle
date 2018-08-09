@@ -13,20 +13,12 @@ class Downloader
     private $downloadManager;
 
     /**
-     * @var string
-     */
-    private $projectRoot;
-
-    /**
      * @param \Composer\Downloader\DownloadManager $downloadManager
-     * @param string $projectRoot
      */
     public function __construct(
-        \Composer\Downloader\DownloadManager $downloadManager,
-        $projectRoot
+        \Composer\Downloader\DownloadManager $downloadManager
     ) {
         $this->downloadManager = $downloadManager;
-        $this->projectRoot = $projectRoot;
     }
 
     /**
@@ -37,12 +29,17 @@ class Downloader
     {
         $config = $package->getExtra();
 
+        $source = getcwd() . DIRECTORY_SEPARATOR . $package->getSourceUrl();
         $targetDir = trim($package->getTargetDir(), chr(32));
+
+        if (!$package->getDistType() && !$package->getSourceType()) {
+            return;
+        }
 
         try {
             $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
         } catch (\InvalidArgumentException $e) {
-            if (is_dir($this->projectRoot . DIRECTORY_SEPARATOR . $package->getSourceUrl())) {
+            if (is_dir($source)) {
                 return;
             }
 

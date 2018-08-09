@@ -31,7 +31,9 @@
     "minimum-stability": "dev",
     "extra": {
         "class": "Vaimo\\ComposerRepositoryBundle\\Plugin",
-        "changelog-file": "changelog.json"
+        "changelog": {
+            "source": "changelog.json"
+        }
     },
     "autoload": {
         "psr-4": {

@@ -31,8 +31,7 @@ class InfoCommand extends \Composer\Command\BaseCommand
 
         $pathInfo = new \Vaimo\ComposerRepositoryBundle\Bundle\PathInfo(
             $composer->getRepositoryManager(),
-            $composer->getInstallationManager(),
-            rtrim(dirname($composer->getConfig()->getConfigSource()->getName()), DIRECTORY_SEPARATOR)
+            $composer->getInstallationManager()
         );
 
         try {

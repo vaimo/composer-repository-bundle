@@ -70,8 +70,7 @@ class PackagesCollector
         $targetDir = trim($package->getTargetDir(), chr(32));
 
         if ($config['local']) {
-            $rootDir = dirname($this->composer->getConfig()->getConfigSource()->getName());
-            $targetDir = rtrim($rootDir . DIRECTORY_SEPARATOR . $targetDir, DIRECTORY_SEPARATOR);
+            $targetDir = rtrim(getcwd() . DIRECTORY_SEPARATOR . $targetDir, DIRECTORY_SEPARATOR);
         }
 
         $paths = array();

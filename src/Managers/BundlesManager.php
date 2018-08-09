@@ -49,20 +49,16 @@ class BundlesManager
         $this->bundlesRepository = new BundlesRepository($this->composer, $this->io);
     }
 
-    /**
-     * @param bool $isVerbose
-     * @throws \Exception
-     */
-    public function bootstrap($isVerbose = false)
+    public function bootstrap()
     {
         if (!$bundles = $this->bundlesRepository->getPackages()) {
             return;
         }
 
         foreach ($this->bootstrapSteps as $step) {
-            $step->execute($bundles, $isVerbose);
+            $step->execute($bundles);
 
-            if ($isVerbose) {
+            if ($this->io->isVerbose()) {
                 $this->io->write('');
             }
         }

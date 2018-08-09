@@ -5,8 +5,8 @@
  */
 namespace Vaimo\ComposerRepositoryBundle;
 
-class Plugin implements \Composer\Plugin\PluginInterface,
-    \Composer\EventDispatcher\EventSubscriberInterface, \Composer\Plugin\Capable
+class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capable,
+    \Composer\EventDispatcher\EventSubscriberInterface
 {
     /**
      * @var \Composer\IO\IOInterface
@@ -18,11 +18,24 @@ class Plugin implements \Composer\Plugin\PluginInterface,
      */
     private $bundlesManager;
 
+    /**
+     * @var string[]
+     */
+    private $specialCaseCommands = array('require');
+
     public function activate(\Composer\Composer $composer, \Composer\IO\IOInterface $io)
     {
         $this->io = $io;
 
         $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
+
+        $input = new \Symfony\Component\Console\Input\ArgvInput();
+
+        if (!in_array($input->getFirstArgument(), $this->specialCaseCommands)) {
+            return;
+        }
+
+        $this->bootstrapBundles();
     }
 
     public static function getSubscribedEvents()
@@ -33,14 +46,9 @@ class Plugin implements \Composer\Plugin\PluginInterface,
         );
     }
 
-    /**
-     * @throws \Exception
-     */
     public function bootstrapBundles()
     {
-        $this->bundlesManager->bootstrap(
-            $this->io->isVerbose()
-        );
+        $this->bundlesManager->bootstrap();
     }
 
     public function getCapabilities()

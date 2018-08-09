@@ -5,7 +5,7 @@
  */
 namespace Vaimo\ComposerRepositoryBundle\BootstrapSteps;
 
-class RegisterStep
+class RegisterStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\BootstrapStepInterface
 {
     /**
      * @var \Composer\Composer
@@ -23,6 +23,11 @@ class RegisterStep
     private $bundlePackageDefCollector;
 
     /**
+     * @var \Vaimo\ComposerRepositoryBundle\Console\Logger
+     */
+    private $output;
+
+    /**
      * @param \Composer\Composer $composer
      * @param \Composer\IO\IOInterface $io
      */
@@ -36,13 +41,13 @@ class RegisterStep
         $this->bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector(
             $this->composer
         );
+
+        $this->output = new \Vaimo\ComposerRepositoryBundle\Console\Logger($this->io);
     }
 
-    public function execute(array $bundles, $isVerbose)
+    public function execute(array $bundles)
     {
-        $output = new \Vaimo\ComposerRepositoryBundle\Console\Output($this->io, $isVerbose);
-
-        $output->info('Configuring packages');
+        $this->output->info('Configuring packages');
 
         $bundlePackageQueue = array();
 
@@ -63,11 +68,10 @@ class RegisterStep
             );
         }
 
-        $output->info('Registering package endpoints');
-
-        $repositoryManager = $this->composer->getRepositoryManager();
+        $this->output->info('Registering package endpoints');
 
         $rootPackage = $this->composer->getPackage();
+        $repositoryManager = $this->composer->getRepositoryManager();
 
         $rootRequires = array_replace(
             $rootPackage->getRequires(),
@@ -76,14 +80,28 @@ class RegisterStep
 
         $names = array_keys($bundlePackageQueue);
 
+        $repositories = $repositoryManager->getRepositories();
+
+        $repositoryMap = array_combine(
+            array_map(function ($item) {
+                $config = $item->getRepoConfig();
+                return $config['url'] ?? '';
+            }, $repositories),
+            $repositories
+        );
+
         foreach ($bundlePackageQueue as $name => $config) {
             $owner = $config['owner'];
             $bundle = $bundles[$owner];
 
             $targetDir = trim($bundle->getTargetDir(), chr(32));
 
-            $output->raw('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['md5']);
-            $output->raw('    ~ Bundle: <comment>%s</comment>', $config['owner']);
+            $this->output->raw('  - Including <info>%s</info> (<comment>%s</comment>)', $name, $config['md5']);
+            $this->output->raw('    ~ Bundle: <comment>%s</comment>', $config['owner']);
+
+            if (isset($repositoryMap[$config['path']])) {
+                continue;
+            }
 
             $repository = $repositoryManager->createRepository('path', array(
                 'url' => $config['path'],
@@ -109,17 +127,19 @@ class RegisterStep
                     /** @var \Composer\Semver\Constraint\Constraint $constraint */
                     $constraint = $rootRequire->getConstraint();
 
-                    $version = ltrim((string)$constraint, ' =<>');
+                    $version = ltrim((string)$constraint, ' =<>~^');
                     $prettyVersion = $constraint->getPrettyString();
 
                     $package->replaceVersion($version, $prettyVersion);
                 } else {
-                    $package->replaceVersion('9999999-dev', 'dev-default');
+                    $bundleConstraint = 'dev-' . $owner;
+
+                    $package->replaceVersion($bundleConstraint, $bundleConstraint);
                 }
             }
 
             if ($name !== end($names)) {
-                $output->nl();
+                $this->output->nl();
             }
         }
     }

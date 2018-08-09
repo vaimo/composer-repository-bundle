@@ -138,10 +138,38 @@ registered bundles.
 After bundles have been registered in composer.json, user can just install them as any other composer
 package. Note that package versions are ignored, use dev-bundle instead. 
 
-    composer require magento/theme-frontend-venia:1.0.0 
+    composer require magento/theme-frontend-venia:'dev-magento-research/pwa-studio'
 
-Note that the version used for the require is 100% up to the developer as the package version constraint 
-check is bypassed due to the package being local.
+Note that 'composer require' is somewhat special as a command and does require a non-version string
+to be used when adding the module to the repository. The constraint will be generated from bundle
+repository name, so in case you want to require the package as "dev-local", use the following:
+
+```json
+{
+    "extra": {
+        "bundles": {
+            "local": "modules"
+        }
+    }
+}
+```
+
+Note that this configuration will use the folder <project-root>/modules as bundle repository and packages
+from there can be installed with
+
+    composer require vaimo/some-package:'dev-local' 
+
+### Alternative installation (installing with version)     
+
+In case you added the module to the project's composer.json manually, any version string can be used. So
+you could, for example, declare  magento/theme-frontend-venia requirement in composer.json as "1.0.0". In
+this case, the installation would be:
+ 
+    # Step 1: add the "magento/theme-frontend-venia": "1.0.0" to composer.json manually
+    
+    # Step 2: run composer update to install the module 
+    composer update magento/theme-frontend-venia
+
 
 ## Bundle package deployment
 

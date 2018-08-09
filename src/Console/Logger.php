@@ -5,7 +5,7 @@
  */
 namespace Vaimo\ComposerRepositoryBundle\Console;
 
-class Output
+class Logger
 {
     /**
      * @var \Composer\IO\IOInterface
@@ -13,25 +13,18 @@ class Output
     private $io;
 
     /**
-     * @var bool
-     */
-    private $isVerbose;
-
-    /**
      * @param \Composer\IO\IOInterface $io
      * @param $isVerbose
      */
     public function __construct(
-        \Composer\IO\IOInterface $io,
-        $isVerbose = false
+        \Composer\IO\IOInterface $io
     ) {
         $this->io = $io;
-        $this->isVerbose = $isVerbose;
     }
 
     public function info()
     {
-        if (!$this->isVerbose) {
+        if (!$this->io->isVerbose()) {
             return;
         }
 
@@ -44,7 +37,7 @@ class Output
 
     public function raw()
     {
-        if (!$this->isVerbose) {
+        if (!$this->io->isVerbose()) {
             return;
         }
 
@@ -57,7 +50,7 @@ class Output
 
     public function nl()
     {
-        if (!$this->isVerbose) {
+        if (!$this->io->isVerbose()) {
             return;
         }
 
