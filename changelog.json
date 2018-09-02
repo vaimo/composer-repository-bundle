@@ -1,4 +1,12 @@
 {
+    "1.4.3": {
+        "fix": [
+            "make the module compatible with 5.3"
+        ],
+        "maintenance": [
+            "introduced change-logs plugin dev dependency"
+        ]
+    },
     "1.4.2": {
         "fix": [
             "allow the plugin to be uninstalled without a crash",

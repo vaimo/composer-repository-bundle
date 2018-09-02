@@ -21,7 +21,7 @@ class DeployCommand extends \Composer\Command\BaseCommand
             'packages',
             \Symfony\Component\Console\Input\InputArgument::IS_ARRAY,
             'Targeted bundle package name',
-            []
+            array()
         );
     }
 
