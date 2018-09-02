@@ -1,7 +1,8 @@
 {
     "1.4.2": {
         "fix": [
-            "allow the plugin to be uninstalled without a crash"
+            "allow the plugin to be uninstalled without a crash",
+            "absolute paths in composer.lock cause issues on clean install"
         ]
     },
     "1.4.1": {
