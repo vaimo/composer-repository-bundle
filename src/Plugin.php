@@ -19,6 +19,11 @@ class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capab
     private $bundlesManager;
 
     /**
+     * @var \Vaimo\ComposerRepositoryBundle\Analysers\ComposerOperationAnalyser
+     */
+    private $operationAnalyser;
+    
+    /**
      * @var string[]
      */
     private $specialCaseCommands = array('require');
@@ -29,6 +34,10 @@ class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capab
 
         $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
 
+        $this->operationAnalyser = new \Vaimo\ComposerRepositoryBundle\Analysers\ComposerOperationAnalyser(
+            $composer
+        );
+        
         try {
             $input = new \Symfony\Component\Console\Input\ArgvInput();
         } catch (\Exception $e) {
@@ -48,12 +57,17 @@ class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capab
     {
         return array(
             \Composer\Script\ScriptEvents::PRE_INSTALL_CMD => 'bootstrapBundles',
-            \Composer\Script\ScriptEvents::PRE_UPDATE_CMD => 'bootstrapBundles'
+            \Composer\Script\ScriptEvents::PRE_UPDATE_CMD => 'bootstrapBundles',
+            \Composer\Installer\PackageEvents::PRE_PACKAGE_UNINSTALL => 'onPackageUninstall'
         );
     }
 
     public function bootstrapBundles()
     {
+        if (!$this->bundlesManager) {
+            return;
+        }
+        
         $this->bundlesManager->bootstrap();
     }
 
@@ -63,5 +77,14 @@ class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capab
             'Composer\Plugin\Capability\CommandProvider' =>
                 '\Vaimo\ComposerRepositoryBundle\Composer\Plugin\CommandsProvider'
         );
+    }
+
+    public function onPackageUninstall(\Composer\Installer\PackageEvent $event)
+    {
+        if (!$this->operationAnalyser->isPluginUninstallOperation($event->getOperation())) {
+            return;
+        }
+        
+        $this->bundlesManager = null;
     }
 }
