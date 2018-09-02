@@ -50,6 +50,7 @@ class RegisterStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\Bootstr
         $this->output->info('Configuring packages');
 
         $bundlePackageQueue = array();
+        $rootDir = getcwd();
 
         foreach ($bundles as $bundleName => $bundle) {
             $packages = $this->bundlePackageDefCollector->collectBundlePackageDefinitions($bundle);
@@ -104,7 +105,9 @@ class RegisterStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\Bootstr
             }
 
             $repository = $repositoryManager->createRepository('path', array(
-                'url' => $config['path'],
+                'url' => strpos($config['path'], $rootDir) === 0 
+                    ? ltrim(substr($config['path'], strlen($rootDir)), DIRECTORY_SEPARATOR) 
+                    : $config['path'],
                 'options' => array(
                     'symlink' => $config['symlink'],
                     'bundle-root' => $targetDir,

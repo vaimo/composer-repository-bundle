@@ -5,6 +5,9 @@
  */
 namespace Vaimo\ComposerRepositoryBundle;
 
+use Vaimo\ComposerRepositoryBundle\Managers;
+use Vaimo\ComposerRepositoryBundle\Analysers;
+
 class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capable,
     \Composer\EventDispatcher\EventSubscriberInterface
 {
@@ -32,11 +35,8 @@ class Plugin implements \Composer\Plugin\PluginInterface, \Composer\Plugin\Capab
     {
         $this->io = $io;
 
-        $this->bundlesManager = new \Vaimo\ComposerRepositoryBundle\Managers\BundlesManager($composer, $io);
-
-        $this->operationAnalyser = new \Vaimo\ComposerRepositoryBundle\Analysers\ComposerOperationAnalyser(
-            $composer
-        );
+        $this->bundlesManager = new Managers\BundlesManager($composer, $io);
+        $this->operationAnalyser = new Analysers\ComposerOperationAnalyser();
         
         try {
             $input = new \Symfony\Component\Console\Input\ArgvInput();
