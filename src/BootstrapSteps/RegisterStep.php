@@ -11,12 +11,7 @@ class RegisterStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\Bootstr
      * @var \Composer\Composer
      */
     private $composer;
-
-    /**
-     * @var \Composer\IO\IOInterface
-     */
-    private $io;
-
+    
     /**
      * @var \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector
      */
@@ -36,13 +31,12 @@ class RegisterStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\Bootstr
         \Composer\IO\IOInterface $io
     ) {
         $this->composer = $composer;
-        $this->io = $io;
 
         $this->bundlePackageDefCollector = new \Vaimo\ComposerRepositoryBundle\Bundle\PackagesCollector(
             $this->composer
         );
 
-        $this->output = new \Vaimo\ComposerRepositoryBundle\Console\Logger($this->io);
+        $this->output = new \Vaimo\ComposerRepositoryBundle\Console\Logger($io);
     }
 
     public function execute(array $bundles)
@@ -59,9 +53,18 @@ class RegisterStep implements \Vaimo\ComposerRepositoryBundle\Interfaces\Bootstr
 
             $isLocalPackage = isset($config['local']) || $config['local'];
 
-            $updates = array_fill_keys(array_keys($packages), array(
-                'symlink' => $isLocalPackage || isset($config['target'])
-            ));
+            $installMode = 'symlink';
+            
+            if (isset($config['mode'])) {
+                $installMode = $config['mode'];
+            }
+            
+            $updates = array_fill_keys(
+                array_keys($packages), 
+                array(
+                    'symlink' => ($isLocalPackage || isset($config['target'])) && $installMode !== 'mirror'
+                )
+            );
 
             $bundlePackageQueue = array_replace(
                 array_replace_recursive($packages, $updates),

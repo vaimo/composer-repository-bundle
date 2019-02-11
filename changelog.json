@@ -1,4 +1,12 @@
 {
+    "1.5.0": {
+        "feature": [
+            "allow forcing a bundle source to be installed with mirroring (instead of local bundles always ending up as sym-linked entities)"
+        ],
+        "fix": [
+            "do not keep re-installing sym-linked modules on file changes (skip the md5 calculation for file contents)"
+        ]
+    },
     "1.4.3": {
         "fix": [
             "make the module compatible with 5.3"
@@ -26,7 +34,7 @@
             "require command not triggering bundle bootstrap (therefore 'composer require' was not usable to get bundle packages installed)",
             "don't fail when local bundle folder (configured in composer.json extra) does not exist",
             "use getcwd() for detecting project root directory instead of resolving it from composer config path which might be different when running global composer",
-            "changed the default dev-* branch name that bundle modules are perceived with: dev-<bundlename>",
+            "changed the default dev-* branch name that bundle modules are perceived with: dev-<bundle-name>",
             "making sure that calling bundle repo bootstrap twice does not required repositories multiple times"
         ]
     },

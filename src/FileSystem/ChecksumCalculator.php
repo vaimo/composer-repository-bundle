@@ -17,7 +17,7 @@ class ChecksumCalculator
         $this->filesCollector = new \Vaimo\ComposerRepositoryBundle\FileSystem\FilesCollector();
     }
 
-    public function calculate($target)
+    public function calculate($target, $includeContents = false)
     {
         if (is_file($target)) {
             return md5($target);
@@ -30,9 +30,11 @@ class ChecksumCalculator
         sort($filePaths);
 
         foreach ($filePaths as $filePath) {
-            $fileFootprints[$filePath] = md5_file($filePath);
+            $fileFootprints[$filePath] = $includeContents ? md5_file($filePath) : true;
         }
 
-        return md5(serialize($fileFootprints));
+        return md5(
+            serialize($fileFootprints)
+        );
     }
 }

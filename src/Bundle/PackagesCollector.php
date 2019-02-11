@@ -52,10 +52,22 @@ class PackagesCollector
             $packageName = $packageDefinition['name'];
             $packagePath = dirname($path);
 
+            $isLocalPackage = isset($config['local']) || $config['local'];
+
+            $installMode = 'symlink';
+
+            if (isset($config['mode'])) {
+                $installMode = $config['mode'];
+            }
+
+            $isLinkedPackage = ($isLocalPackage || isset($config['target'])) && $installMode !== 'mirror';
+            
+            $moduleChecksum = $this->checksumCalculator->calculate($packagePath, !$isLinkedPackage);
+            
             $definitions[$packageName] = array(
                 'owner' => $config['name'],
                 'path' => $packagePath,
-                'md5' => md5($config['md5'] . ':' . $this->checksumCalculator->calculate($packagePath)),
+                'md5' => md5($config['md5'] . ':' . $moduleChecksum),
                 'config' => $packageDefinition
             );
         }
