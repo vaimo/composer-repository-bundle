@@ -69,9 +69,23 @@ become installable.
 ```
 
 This allows any module to be installed from <project-root>/modules. Note that the modules from a local 
-bundle like this will symlinked instead of being mirrored. 
+bundle like this will sym-linked instead of being mirrored by default, but can be forced to be also 
+mirrored by defining the installation mode. 
 
-Not configuring "source" at all will cause the project root to be considered as a folder for installation 
+```json
+{
+    "extra": {
+        "bundles": {
+            "my/project_name": {
+                "source": "modules",
+                "mode": "mirror"
+            }
+        }
+    }
+}
+```
+
+Not configuring the "source" at all will cause the project root to be considered as a folder for installation 
 (can be combined with sub-folder config).
 
 ## Configuration: defining bundle sub-folders as repository root
