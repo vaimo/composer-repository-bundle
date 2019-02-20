@@ -3,24 +3,6 @@
 Allows composer package installation from repositories or zip files that have multiple packages 
 inside of them or declare certain folder within the project as local repository.
 
-## Quick-start
-
-If you want to make local folder behave as if it's a package repository.
-
-1. require this plugin `composer require vaimo/composer-repository-bundle`
-2. configure it (see above)
-3. add module under modules/myvendor/mypackage with a composer.json (let's say that package name inside composer.json will be myvendor/module-mypackage
-4. install it with `composer require myvendor/module-mypackage`
-
-```json
-{
-    "extra": {
-        "bundles": {
-            "local": "modules"
-        }
-    }
-}
-```
 ## Configuration: overview
 
 Environment variables can be defined as key value pairs in the project's composer.json
@@ -37,6 +19,27 @@ Environment variables can be defined as key value pairs in the project's compose
 These values will be declared for system-wide use. The main idea of the module is to provide
 a way to pre-configure any flags for any of the composer plugins in case the flag setting
 has not been properly exposed to the end-user.
+
+## Quick-start
+
+If you want to make local folder behave as if it's a package repository.
+
+1. require this plugin `composer require vaimo/composer-repository-bundle`
+2. configure it (see above)
+3. add module under modules/myvendor/mypackage with a composer.json (let's say that package name inside composer.json will be myvendor/module-mypackage
+4. install it with `composer require myvendor/module-mypackage:dev-my-bundle`
+
+```json
+{
+    "extra": {
+        "bundles": {
+            "my-bundle": "modules"
+        }
+    }
+}
+```
+
+If you want the files to be mirrored instead on symlinked, which is the default behaviour, configure the [deploy mode](#configuration-deploy-mode) for your bundle.
 
 ## Configuration: adding bundle definition
 
@@ -102,7 +105,7 @@ The above (due to it's minimalistic setup) can also be configred as:
     }
 }
 ```
-  
+
 ## Configuration: deploy mode
 
 ```json
