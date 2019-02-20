@@ -11,26 +11,53 @@ Environment variables can be defined as key value pairs in the project's compose
 
 ```json
 {
-  "extra": {
-    "bundles": {},
-    "bundles-package": {}
-  }
+    "_ignoreme": "this is the main level of composer.json",
+  
+    "extra": {
+        "bundles": {},
+        "bundles-package": {}
+    }
 }
 ```
 
 These values will be declared for system-wide use. The main idea of the module is to provide
 a way to pre-configure any flags for any of the composer plugins in case the flag setting
 has not been properly exposed to the end-user.
-  
+
+## Quick-start
+
+If you want to make local folder behave as if it's a package repository.
+
+1. require this plugin `composer require vaimo/composer-repository-bundle`
+2. configure it (see above)
+3. add module under modules/myvendor/mypackage with a composer.json (let's say that package name inside composer.json will be myvendor/module-mypackage
+4. install it with `composer require myvendor/module-mypackage:dev-my-bundle`
+
+```json
+{
+    "_ignoreme": "this is the main level of composer.json",
+    
+    "extra": {
+        "bundles": {
+            "my-bundle": "modules"
+        }
+    }
+}
+```
+
+If you want the files to be mirrored instead on symlinked, which is the default behaviour, configure the [deploy mode](#configuration-deploy-mode) for your bundle.
+
 ## Configuration: adding bundle definition
 
 Can be done against zip file ...
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz"
             }
         }
@@ -42,9 +69,11 @@ Same can be done against repository (in which case either branch name of change-
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "git@github.com:magento-research/pwa-studio.git",
                 "reference": "9c6dfcc955df4b88218cd6c0eb6d0260df27117d"
             }
@@ -60,9 +89,11 @@ become installable.
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "my/project_name": {
+            "my-bundle": {
                 "source": "modules"
             }
         }
@@ -72,13 +103,32 @@ become installable.
 
 This allows any module to be installed from <project-root>/modules. Note that the modules from a local 
 bundle like this will sym-linked instead of being mirrored by default, but can be forced to be also 
-mirrored by defining the installation mode. 
+mirrored by defining the installation mode. See the guide about [installation](#installing-packages-from-bundle) 
+for more details on how to install the package can be installed from the bundled repository.
+  
+The above (due to it's minimalistic setup) can also be configred as:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "my/project_name": {
+            "my-bundle": "modules"
+        }
+    }
+}
+```
+
+## Configuration: deploy mode
+
+```json
+{
+    "_ignoreme": "this is the main level of composer.json",
+    
+    "extra": {
+        "bundles": {
+            "my-bundle": {
                 "source": "modules",
                 "mode": "mirror"
             }
@@ -97,9 +147,11 @@ installable package, in case the packages are available in some sub-folder(s), r
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz",
                 "paths": ["packages"]
             }
@@ -119,6 +171,8 @@ values for generated package definitions:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles-package": {
             "autoload": {
@@ -135,9 +189,11 @@ In case you want bundle to be downloaded into the root of your directory, config
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz",
                 "paths": ["packages"],
                 "target": "pwa-studio"
@@ -158,17 +214,23 @@ registered bundles.
 After bundles have been registered in composer.json, user can just install them as any other composer
 package. Note that package versions are ignored, use dev-bundle instead. 
 
-    composer require magento/theme-frontend-venia:'dev-magento-research/pwa-studio'
+    composer require magento/theme-frontend-venia:'dev-my-bundle'
 
 Note that 'composer require' is somewhat special as a command and does require a non-version string
-to be used when adding the module to the repository. The constraint will be generated from bundle
-repository name, so in case you want to require the package as "dev-local", use the following:
+to be used when adding the module to the repository. 
+
+The constraint will be generated from bundle repository name, so in case you want to require the package 
+as "dev-local", use the following:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
-            "local": "modules"
+            "local": {
+                "source": "modules"
+            }
         }
     }
 }
@@ -187,8 +249,7 @@ this case, the installation would be:
  
     # Step 1: add the "magento/theme-frontend-venia": "1.0.0" to composer.json manually
     
-    # Step 2: run composer update to install the module 
-    composer update magento/theme-frontend-venia
+    # Step 2: run composer update to install the module composer update magento/theme-frontend-venia
 
 
 ## Bundle package deployment
@@ -197,6 +258,8 @@ There are two ways that the package might end up being deployed to the project's
 
 * symlinked - done when bundle situated under the project root (bundle is part of the project).
 * mirrored - done when bundle situates in composer package cache (bundle is part of global composer). 
+
+Alternatively you could force it to be either by explicitly mentioning [deploy mode](#configuration-deploy-mode) in the bundle configuration.
 
 ## Changelog 
 
