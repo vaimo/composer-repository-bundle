@@ -82,7 +82,7 @@ class PackagesCollector
         $targetDir = trim($package->getTargetDir(), chr(32));
 
         if ($config['local']) {
-            $targetDir = rtrim(getcwd() . DIRECTORY_SEPARATOR . $targetDir, DIRECTORY_SEPARATOR);
+            $targetDir = $this->composePath(getcwd(), $targetDir);
         }
 
         $paths = array();
@@ -90,24 +90,31 @@ class PackagesCollector
         foreach ($config['paths'] as $basePath) {
             $vendorName = strtok($config['name'], DIRECTORY_SEPARATOR);
 
-            $bundleRoot = $targetDir . DIRECTORY_SEPARATOR . $basePath;
+            $bundleRoot = $this->composePath($targetDir, $basePath, '*');
 
-            $directoryIterator = new \DirectoryIterator($bundleRoot);
-
-            foreach ($directoryIterator as $fileInfo) {
-                if (!$fileInfo->isDir() || $fileInfo->isDot()) {
+            $matches = glob($bundleRoot);
+            
+            foreach ($matches as $match) {
+                if (!is_dir($match)) {
                     continue;
                 }
-
-                $packageName = $fileInfo->getFilename();
-                $packagePath = $fileInfo->getPathname();
-
-                $paths[$vendorName . DIRECTORY_SEPARATOR . $packageName] = $packagePath
-                    . DIRECTORY_SEPARATOR
-                    . ComposerConfig::PACKAGE_FILE;
+                
+                $paths[$this->composePath($vendorName, basename($match))] = $this->composePath($match, ComposerConfig::PACKAGE_FILE);
             }
         }
 
         return $paths;
+    }
+
+    private function composePath()
+    {
+        $pathSegments = \array_map(function ($item) {
+            return \rtrim($item, \DIRECTORY_SEPARATOR);
+        }, \func_get_args());
+
+        return \implode(
+            \DIRECTORY_SEPARATOR,
+            \array_filter($pathSegments)
+        );
     }
 }

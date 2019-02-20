@@ -3,6 +3,8 @@
 Allows composer package installation from repositories or zip files that have multiple packages 
 inside of them or declare certain folder within the project as local repository.
 
+More information on recent changes [HERE](./CHANGELOG.md).
+
 ## Configuration: overview
 
 Environment variables can be defined as key value pairs in the project's composer.json

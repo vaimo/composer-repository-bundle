@@ -90,12 +90,14 @@ class BundlesRepository
                 serialize(array($source, isset($bundle['reference']) ? $bundle['reference'] : '0'))
             );
 
-            $isLocalBundle = is_dir($rootDir . DIRECTORY_SEPARATOR . $source);
+            $isLocalBundle = is_dir(
+                $this->composePath($rootDir, rtrim($source, DIRECTORY_SEPARATOR . '*'))
+            );
 
             if (!$isLocalBundle) {
                 $target = isset($bundle['target'])
-                    ? $rootDir . DIRECTORY_SEPARATOR . $bundle['target']
-                    : ($cacheRoot . DIRECTORY_SEPARATOR . $uid);
+                    ? $this->composePath($rootDir, $bundle['target'])
+                    : $this->composePath($cacheRoot, $uid);
             } else {
                 $target = $source;
             }
@@ -137,5 +139,17 @@ class BundlesRepository
         }
 
         return $bundlePackages;
+    }
+
+    private function composePath()
+    {
+        $pathSegments = \array_map(function ($item) {
+            return \rtrim($item, \DIRECTORY_SEPARATOR);
+        }, \func_get_args());
+
+        return \implode(
+            \DIRECTORY_SEPARATOR,
+            \array_filter($pathSegments)
+        );
     }
 }

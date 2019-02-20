@@ -1,4 +1,9 @@
 {
+    "1.6.0": {
+        "feature": [
+            "allow glob patterns in repository path definitions to support deeper/grouped repository setups"
+        ]
+    },
     "1.5.0": {
         "feature": [
             "allow forcing a bundle source to be installed with mirroring (instead of local bundles always ending up as sym-linked entities)"

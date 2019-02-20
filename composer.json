@@ -14,7 +14,7 @@
         "composer-plugin-api": "^1.0"
     },
     "require-dev": {
-        "vaimo/composer-changelogs": "^0.6.3"
+        "vaimo/composer-changelogs": "^0.13.1"
     },
     "support": {
         "source": "https://github.com/vaimo/composer-repository-bundle",
@@ -35,7 +35,10 @@
     "extra": {
         "class": "Vaimo\\ComposerRepositoryBundle\\Plugin",
         "changelog": {
-            "source": "changelog.json"
+            "source": "changelog.json",
+            "output": {
+                "md": "CHANGELOG.md"
+            }
         }
     },
     "autoload": {
