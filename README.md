@@ -50,7 +50,6 @@ The installation will be done from packages that are declared as ...
 ```txt
 modules/module1
 modules/module2
-modules/module2
 ...
 ```
 
