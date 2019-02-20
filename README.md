@@ -114,7 +114,7 @@ become installable.
 
 This allows any module to be installed from <project-root>/modules. Note that the modules from a local 
 bundle like this will sym-linked instead of being mirrored by default, but can be forced to be also 
-mirrored by defining the installation mode. See the guide about [installation](#installing-packages-from-bundle) 
+mirrored by defining the installation mode. See the guide about [installation](#usage-installing-packages-from-bundle) 
 for more details on how to install the package can be installed from the bundled repository.
   
 The above (due to it's minimalistic setup) can also be configred as:
@@ -203,7 +203,7 @@ installable package, in case the packages are available in some sub-folder(s), r
 }
 ```
 
-## Configuring package template
+## Configuration: package template
 
 In case some of the installable sub-folders of the bundle are not directly installable (lack composer.json), 
 the bundle plugin will create the missing package definitions. The only requirement is that the package.
@@ -226,7 +226,7 @@ values for generated package definitions:
 }
 ```
 
-## Configuring custom target path for bundle download
+## Configuration: custom target path for bundle download
 
 In case you want bundle to be downloaded into the root of your directory, configure a target folder for it.
 
@@ -249,7 +249,7 @@ In case you want bundle to be downloaded into the root of your directory, config
 Note that the package installation in this case will result in packages being sym-linked instead of being
 mirrored. 
 
-## Installing packages from bundle
+## Usage: installing packages from bundle
 
 Make sure that you have installed this plugin separately before you start installing packages from
 registered bundles.
