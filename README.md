@@ -3,23 +3,6 @@
 Allows composer package installation from repositories or zip files that have multiple packages 
 inside of them or declare certain folder within the project as local repository.
 
-## Configuration: overview
-
-Environment variables can be defined as key value pairs in the project's composer.json
-
-```json
-{
-  "extra": {
-    "bundles": {},
-    "bundles-package": {}
-  }
-}
-```
-
-These values will be declared for system-wide use. The main idea of the module is to provide
-a way to pre-configure any flags for any of the composer plugins in case the flag setting
-has not been properly exposed to the end-user.
-
 ## Quick-start
 
 If you want to make local folder behave as if it's a package repository.
@@ -38,6 +21,22 @@ If you want to make local folder behave as if it's a package repository.
     }
 }
 ```
+## Configuration: overview
+
+Environment variables can be defined as key value pairs in the project's composer.json
+
+```json
+{
+  "extra": {
+    "bundles": {},
+    "bundles-package": {}
+  }
+}
+```
+
+These values will be declared for system-wide use. The main idea of the module is to provide
+a way to pre-configure any flags for any of the composer plugins in case the flag setting
+has not been properly exposed to the end-user.
 
 ## Configuration: adding bundle definition
 
