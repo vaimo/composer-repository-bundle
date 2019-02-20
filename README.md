@@ -9,12 +9,12 @@ Environment variables can be defined as key value pairs in the project's compose
 
 ```json
 {
-  "_ignoreme": "this is the main level of composer.json",
+    "_ignoreme": "this is the main level of composer.json",
   
-  "extra": {
-    "bundles": {},
-    "bundles-package": {}
-  }
+    "extra": {
+        "bundles": {},
+        "bundles-package": {}
+    }
 }
 ```
 
@@ -33,6 +33,8 @@ If you want to make local folder behave as if it's a package repository.
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": "modules"
@@ -49,6 +51,8 @@ Can be done against zip file ...
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": {
@@ -63,6 +67,8 @@ Same can be done against repository (in which case either branch name of change-
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": {
@@ -81,6 +87,8 @@ become installable.
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": {
@@ -100,6 +108,8 @@ The above (due to it's minimalistic setup) can also be configred as:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": "modules"
@@ -133,6 +143,8 @@ installable package, in case the packages are available in some sub-folder(s), r
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": {
@@ -155,6 +167,8 @@ values for generated package definitions:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles-package": {
             "autoload": {
@@ -171,6 +185,8 @@ In case you want bundle to be downloaded into the root of your directory, config
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": {
@@ -204,6 +220,8 @@ as "dev-local", use the following:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "local": {
