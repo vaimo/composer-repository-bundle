@@ -122,6 +122,8 @@ The above (due to it's minimalistic setup) can also be configred as:
 
 ```json
 {
+    "_ignoreme": "this is the main level of composer.json",
+    
     "extra": {
         "bundles": {
             "my-bundle": {
