@@ -3,6 +3,9 @@
 Allows composer package installation from repositories or zip files that have multiple packages 
 inside of them or declare certain folder within the project as local repository.
 
+In short: it removes the need to declare each local package as PATH repository and allows users to
+install things from remote .zip files (by downloading them and registering them - again - as PATH repositories).
+
 More information on recent changes [HERE](./CHANGELOG.md).
 
 ## Overview
@@ -283,3 +286,27 @@ Note that this configuration will use the folder <project-root>/modules as bundl
 from there can be installed with
 
     composer require vaimo/some-package:'dev-local' 
+
+## Usage: updating the package
+
+The Composer run will be provided with MD5 fingerprint of all the contents of every file in the pacakges, so updating
+a package (in case it was not symlinked to vendor). Can be done by just running normal composer update command.
+
+    composer update vaimo/some-package
+
+
+## Development: debugging
+
+In case the packages don't become installable, the developer is advised to run the require command with verbose mode.
+
+    composer require vaimo/some-package:'dev-local' -vvv
+
+This should expose output similar to this one (if everything has been configured correctly):
+
+```txt
+Registering package endpoints
+  - Including vaimo/some-package (e9db459e445a5fa10d4c6ff264332815)
+    ~ Bundle: local
+```
+
+If something similar to this was not visible in the console output then the packages in the bundle folders are not visible for the Compsoer to install.
