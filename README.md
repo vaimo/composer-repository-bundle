@@ -19,7 +19,26 @@ Environment variables can be defined as key value pairs in the project's compose
 These values will be declared for system-wide use. The main idea of the module is to provide
 a way to pre-configure any flags for any of the composer plugins in case the flag setting
 has not been properly exposed to the end-user.
-  
+
+## Quick-start
+
+If you want to make local folder behave as if it's a package repository.
+
+1. require this plugin `composer require vaimo/composer-repository-bundle`
+2. configure it (see above)
+3. add module under modules/myvendor/mypackage with a composer.json (let's say that package name inside composer.json will be myvendor/module-mypackage
+4. install it with `composer require myvendor/module-mypackage`
+
+```json
+{
+    "extra": {
+        "bundles": {
+            "local": "modules"
+        }
+    }
+}
+```
+
 ## Configuration: adding bundle definition
 
 Can be done against zip file ...
@@ -28,7 +47,7 @@ Can be done against zip file ...
 {
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz"
             }
         }
@@ -42,7 +61,7 @@ Same can be done against repository (in which case either branch name of change-
 {
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "git@github.com:magento-research/pwa-studio.git",
                 "reference": "9c6dfcc955df4b88218cd6c0eb6d0260df27117d"
             }
@@ -60,7 +79,7 @@ become installable.
 {
     "extra": {
         "bundles": {
-            "my/project_name": {
+            "my-bundle": {
                 "source": "modules"
             }
         }
@@ -70,13 +89,28 @@ become installable.
 
 This allows any module to be installed from <project-root>/modules. Note that the modules from a local 
 bundle like this will sym-linked instead of being mirrored by default, but can be forced to be also 
-mirrored by defining the installation mode. 
+mirrored by defining the installation mode. See the guide about [installation](#installing-packages-from-bundle) 
+for more details on how to install the package can be installed from the bundled repository.
+  
+The above (due to it's minimalistic setup) can also be configred as:
 
 ```json
 {
     "extra": {
         "bundles": {
-            "my/project_name": {
+            "my-bundle": "modules"
+        }
+    }
+}
+```
+  
+## Configuration: deploy mode
+
+```json
+{
+    "extra": {
+        "bundles": {
+            "my-bundle": {
                 "source": "modules",
                 "mode": "mirror"
             }
@@ -97,7 +131,7 @@ installable package, in case the packages are available in some sub-folder(s), r
 {
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz",
                 "paths": ["packages"]
             }
@@ -135,7 +169,7 @@ In case you want bundle to be downloaded into the root of your directory, config
 {
     "extra": {
         "bundles": {
-            "magento-research/pwa-studio": {
+            "my-bundle": {
                 "url": "https://github.com/magento-research/pwa-studio/archive/master.tar.gz",
                 "paths": ["packages"],
                 "target": "pwa-studio"
@@ -156,17 +190,21 @@ registered bundles.
 After bundles have been registered in composer.json, user can just install them as any other composer
 package. Note that package versions are ignored, use dev-bundle instead. 
 
-    composer require magento/theme-frontend-venia:'dev-magento-research/pwa-studio'
+    composer require magento/theme-frontend-venia:'dev-my-bundle'
 
 Note that 'composer require' is somewhat special as a command and does require a non-version string
-to be used when adding the module to the repository. The constraint will be generated from bundle
-repository name, so in case you want to require the package as "dev-local", use the following:
+to be used when adding the module to the repository. 
+
+The constraint will be generated from bundle repository name, so in case you want to require the package 
+as "dev-local", use the following:
 
 ```json
 {
     "extra": {
         "bundles": {
-            "local": "modules"
+            "local": {
+                "source": "modules"
+            }
         }
     }
 }
