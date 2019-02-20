@@ -155,7 +155,7 @@ towards. This can be changed by using GLOB pattern in the path definition.
     "extra": {
         "bundles": {
             "my-bundle": {
-                "source": "modules/*/"
+                "source": "modules/*"
             }
         }
     }

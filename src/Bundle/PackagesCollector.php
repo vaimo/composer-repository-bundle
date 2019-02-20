@@ -89,10 +89,10 @@ class PackagesCollector
 
         foreach ($config['paths'] as $basePath) {
             $vendorName = strtok($config['name'], DIRECTORY_SEPARATOR);
-
-            $bundleRoot = $this->composePath($targetDir, $basePath, '*');
-
-            $matches = glob($bundleRoot);
+            
+            $matches = glob(
+                $this->composePath($targetDir, $basePath, '*')
+            );
             
             foreach ($matches as $match) {
                 if (!is_dir($match)) {
