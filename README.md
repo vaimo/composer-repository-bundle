@@ -30,7 +30,7 @@ If you want to make local folder behave as if it's a package repository.
 
 1. require this plugin `composer require vaimo/composer-repository-bundle`
 2. configure it (see above)
-3. add module under modules/myvendor/mypackage with a composer.json (let's say that package name inside composer.json will be myvendor/module-mypackage
+3. add module under modules/mypackage with a composer.json (let's say that package name inside composer.json will be myvendor/module-mypackage).
 4. install it with `composer require myvendor/module-mypackage:dev-my-bundle`
 
 ```json
@@ -45,7 +45,10 @@ If you want to make local folder behave as if it's a package repository.
 }
 ```
 
-If you want the files to be mirrored instead on symlinked, which is the default behaviour, configure the [deploy mode](#configuration-deploy-mode) for your bundle.
+If you want the files to be mirrored instead on sym-linked, which is the default behaviour, configure 
+the [deploy mode](#configuration-deploy-mode) for your bundle.
+
+If you have a plan to group your local packages different sub-folders, use [wildcards in path definition](#configuration-group-by-vendor).
 
 ## Configuration: adding bundle definition
 
@@ -139,6 +142,34 @@ The above (due to it's minimalistic setup) can also be configred as:
 
 Not configuring the "source" at all will cause the project root to be considered as a folder for installation 
 (can be combined with sub-folder config).
+
+## Configuration: group by vendor
+
+By default, all the packages will be included from the main level of the path that you pointed the bundle 
+towards. This can be changed by using GLOB pattern in the path definition.
+
+```json
+{
+    "_ignoreme": "this is the main level of composer.json",
+    
+    "extra": {
+        "bundles": {
+            "my-bundle": {
+                "source": "modules/*/"
+            }
+        }
+    }
+}
+```
+
+This configuration will make it possible to define packages under several folders in format of ... 
+
+```txt
+modules/myvendor/module1
+modules/myvendor/module2
+modules/othervendor/module2
+...
+```
 
 ## Configuration: defining bundle sub-folders as repository root
 
