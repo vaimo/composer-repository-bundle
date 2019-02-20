@@ -247,8 +247,7 @@ this case, the installation would be:
  
     # Step 1: add the "magento/theme-frontend-venia": "1.0.0" to composer.json manually
     
-    # Step 2: run composer update to install the module 
-    composer update magento/theme-frontend-venia
+    # Step 2: run composer update to install the module composer update magento/theme-frontend-venia
 
 
 ## Bundle package deployment
@@ -257,6 +256,8 @@ There are two ways that the package might end up being deployed to the project's
 
 * symlinked - done when bundle situated under the project root (bundle is part of the project).
 * mirrored - done when bundle situates in composer package cache (bundle is part of global composer). 
+
+Alternatively you could force it to be either by explicitly mentioning [deploy mode](#configuration-deploy-mode) in the bundle configuration.
 
 ## Changelog 
 
