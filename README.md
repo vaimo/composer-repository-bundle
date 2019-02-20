@@ -45,6 +45,15 @@ If you want to make local folder behave as if it's a package repository.
 }
 ```
 
+The installation will be done from packages that are declared as ...
+
+```txt
+modules/module1
+modules/module2
+modules/module2
+...
+```
+
 If you want the files to be mirrored instead on sym-linked, which is the default behaviour, configure 
 the [deploy mode](#configuration-deploy-mode) for your bundle.
 
