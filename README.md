@@ -5,7 +5,7 @@ inside of them or declare certain folder within the project as local repository.
 
 More information on recent changes [HERE](./CHANGELOG.md).
 
-## Configuration: overview
+## Overview
 
 Environment variables can be defined as key value pairs in the project's composer.json
 
@@ -133,6 +133,13 @@ The above (due to it's minimalistic setup) can also be configred as:
 
 ## Configuration: deploy mode
 
+By default the module makes its own decision on how to deploy the package. 
+
+* **symlink** - done when bundle situated under the project root (bundle is part of the project).
+* **mirror** - done when bundle situates in composer package cache (bundle is part of global composer). 
+
+Developer can override this by providing the mode in the bundle configuration.
+
 ```json
 {
     "_ignoreme": "this is the main level of composer.json",
@@ -147,9 +154,6 @@ The above (due to it's minimalistic setup) can also be configred as:
     }
 }
 ```
-
-Not configuring the "source" at all will cause the project root to be considered as a folder for installation 
-(can be combined with sub-folder config).
 
 ## Configuration: group by vendor
 
@@ -279,27 +283,3 @@ Note that this configuration will use the folder <project-root>/modules as bundl
 from there can be installed with
 
     composer require vaimo/some-package:'dev-local' 
-
-### Alternative installation (installing with version)     
-
-In case you added the module to the project's composer.json manually, any version string can be used. So
-you could, for example, declare  magento/theme-frontend-venia requirement in composer.json as "1.0.0". In
-this case, the installation would be:
- 
-    # Step 1: add the "magento/theme-frontend-venia": "1.0.0" to composer.json manually
-    
-    # Step 2: run composer update to install the module composer update magento/theme-frontend-venia
-
-
-## Bundle package deployment
-
-There are two ways that the package might end up being deployed to the project's vendor:
-
-* symlinked - done when bundle situated under the project root (bundle is part of the project).
-* mirrored - done when bundle situates in composer package cache (bundle is part of global composer). 
-
-Alternatively you could force it to be either by explicitly mentioning [deploy mode](#configuration-deploy-mode) in the bundle configuration.
-
-## Changelog 
-
-_Changelog included in the composer.json of the package_
