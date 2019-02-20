@@ -9,6 +9,8 @@ Environment variables can be defined as key value pairs in the project's compose
 
 ```json
 {
+  "_ignoreme": "this is the main level of composer.json",
+  
   "extra": {
     "bundles": {},
     "bundles-package": {}
