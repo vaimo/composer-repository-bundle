@@ -1,4 +1,10 @@
-# composer-repository-bundle
+# Vaimo Composer Repository Bundle
+
+[![GitHub release](https://img.shields.io/github/release/vaimo/composer-repository-bundle.svg)](https://github.com/vaimo/composer-repository-bundle/releases/latest)
+[![Total Downloads](https://poser.pugx.org/vaimo/composer-repository-bundle/downloads)](https://packagist.org/packages/vaimo/composer-repository-bundle)
+[![Daily Downloads](https://poser.pugx.org/vaimo/composer-repository-bundle/d/daily)](https://packagist.org/packages/vaimo/composer-repository-bundle)
+[![Minimum PHP Version](https://img.shields.io/packagist/php-v/vaimo/composer-repository-bundle.svg)](https://php.net/)
+[![License](https://poser.pugx.org/vaimo/composer-repository-bundle/license)](https://packagist.org/packages/vaimo/composer-repository-bundle)
 
 Allows composer package installation from repositories or zip files that have multiple packages 
 inside of them or declare certain folder within the project as local repository.
