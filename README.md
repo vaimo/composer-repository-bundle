@@ -1,6 +1,6 @@
 # Vaimo Composer Repository Bundle
 
-[![GitHub release](https://img.shields.io/github/release/vaimo/composer-repository-bundle.svg)](https://github.com/vaimo/composer-repository-bundle/releases/latest)
+[![Latest Stable Version](https://poser.pugx.org/vaimo/composer-patches/v/stable)](https://packagist.org/packages/vaimo/composer-patches)
 [![Total Downloads](https://poser.pugx.org/vaimo/composer-repository-bundle/downloads)](https://packagist.org/packages/vaimo/composer-repository-bundle)
 [![Daily Downloads](https://poser.pugx.org/vaimo/composer-repository-bundle/d/daily)](https://packagist.org/packages/vaimo/composer-repository-bundle)
 [![Minimum PHP Version](https://img.shields.io/packagist/php-v/vaimo/composer-repository-bundle.svg)](https://php.net/)
