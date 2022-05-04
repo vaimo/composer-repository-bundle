@@ -14,7 +14,7 @@
         "composer-plugin-api": "^1.0 || ^2.0"
     },
     "require-dev": {
-        "vaimo/composer-changelogs": "^0.13.1"
+        "vaimo/composer-changelogs": "^1.0"
     },
     "support": {
         "source": "https://github.com/vaimo/composer-repository-bundle",
@@ -44,6 +44,11 @@
     "autoload": {
         "psr-4": {
             "Vaimo\\ComposerRepositoryBundle\\": "src"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "vaimo/composer-changelogs": true
         }
     }
 }

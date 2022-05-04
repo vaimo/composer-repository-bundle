@@ -2,7 +2,17 @@
 
 _This file has been auto-generated from the contents of changelog.json_
 
-## 1.6.0
+## 1.7.1
+
+require vaimo/composer-changelogs: ^1.0
+Links: [src](https://github.com/vaimo/composer-repository-bundle/tree/1.7.1) [diff](https://github.com/vaimo/composer-repository-bundle/compare/1.7.0...1.7.1)
+
+## 1.7.0 (2022-04-13)
+
+composer 2.3 support
+Links: [src](https://github.com/vaimo/composer-repository-bundle/tree/1.7.0) [diff](https://github.com/vaimo/composer-repository-bundle/compare/1.6.0...1.7.0)
+
+## 1.6.0 (2019-02-20)
 
 ### Feature
 
