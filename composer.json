@@ -14,7 +14,8 @@
         "composer-plugin-api": "^1.0 || ^2.0"
     },
     "require-dev": {
-        "vaimo/composer-changelogs": "^1.0"
+        "vaimo/composer-changelogs": "^1.0",
+        "composer/composer": "^2.0"
     },
     "support": {
         "source": "https://github.com/vaimo/composer-repository-bundle",

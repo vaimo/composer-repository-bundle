@@ -1,4 +1,9 @@
 {
+    "1.7.2": {
+        "fix": [
+            "implement the remaining methods in Vaimo\\ComposerRepositoryBundle\\Plugin"
+        ]
+    },
     "1.7.1": {
         "overview": [
             "require vaimo/composer-changelogs: ^1.0"

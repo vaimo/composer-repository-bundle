@@ -2,7 +2,15 @@
 
 _This file has been auto-generated from the contents of changelog.json_
 
-## 1.7.1
+## 1.7.2
+
+### Fix
+
+* implement the remaining methods in Vaimo\ComposerRepositoryBundle\Plugin
+
+Links: [src](https://github.com/vaimo/composer-repository-bundle/tree/1.7.2) [diff](https://github.com/vaimo/composer-repository-bundle/compare/1.7.1...1.7.2)
+
+## 1.7.1 (2022-05-04)
 
 require vaimo/composer-changelogs: ^1.0
 Links: [src](https://github.com/vaimo/composer-repository-bundle/tree/1.7.1) [diff](https://github.com/vaimo/composer-repository-bundle/compare/1.7.0...1.7.1)
